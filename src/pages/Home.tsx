@@ -52,7 +52,7 @@ const Home = () => {
         <div className="container mx-auto px-4">
           <div className="max-w-3xl mx-auto text-center">
             <h1 className="text-4xl md:text-5xl font-bold mb-4">
-              Welcome to Alber School, Kutus
+              Welcome to Albert School, Kutus
             </h1>
             <p className="text-xl mb-2 opacity-95">Nurturing Talents, Building Character</p>
             <p className="text-lg mb-8 opacity-90">
@@ -77,7 +77,7 @@ const Home = () => {
       {/* Features Section */}
       <section className="py-16 bg-background">
         <div className="container mx-auto px-4">
-          <h2 className="text-3xl font-bold text-center mb-12 text-primary">Why Choose Alber School?</h2>
+          <h2 className="text-3xl font-bold text-center mb-12 text-primary">Why Choose Albert School?</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {features.map((feature, index) => (
               <Card key={index} className="text-center hover:shadow-lg transition-shadow">
@@ -147,7 +147,7 @@ const Home = () => {
       {/* CTA Section */}
       <section className="py-16 bg-gradient-to-br from-secondary to-secondary/80 text-secondary-foreground">
         <div className="container mx-auto px-4 text-center">
-          <h2 className="text-3xl font-bold mb-4">Ready to Join Alber School?</h2>
+          <h2 className="text-3xl font-bold mb-4">Ready to Join Albert School?</h2>
           <p className="text-lg mb-8 opacity-95">
             Enroll your child in a nurturing environment focused on excellence
           </p>

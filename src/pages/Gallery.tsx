@@ -40,7 +40,7 @@ const Gallery = () => {
         <div className="text-center mb-8">
           <h1 className="text-4xl font-bold mb-4 text-primary">School Gallery</h1>
           <p className="text-xl text-muted-foreground">
-            Capturing moments and memories at Alber School
+            Capturing moments and memories at Albert School
           </p>
         </div>
 

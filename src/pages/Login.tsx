@@ -47,7 +47,7 @@ const Login = () => {
           </div>
           <CardTitle className="text-2xl text-center">Welcome Back</CardTitle>
           <CardDescription className="text-center">
-            Sign in to your Alber School account
+            Sign in to your Albert School account
           </CardDescription>
         </CardHeader>
         <CardContent>

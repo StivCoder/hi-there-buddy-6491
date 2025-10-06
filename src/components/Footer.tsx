@@ -8,7 +8,7 @@ const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {/* About */}
           <div>
-            <h3 className="font-bold text-lg mb-4 text-primary">Alber School, Kutus</h3>
+            <h3 className="font-bold text-lg mb-4 text-primary">Albert School, Kutus</h3>
             <p className="text-sm text-muted-foreground mb-2">
               Nurturing Talents, Building Character
             </p>
@@ -49,7 +49,7 @@ const Footer = () => {
         </div>
 
         <div className="border-t mt-8 pt-6 text-center text-sm text-muted-foreground">
-          <p>&copy; {new Date().getFullYear()} Alber School, Kutus. All rights reserved.</p>
+          <p>&copy; {new Date().getFullYear()} Albert School, Kutus. All rights reserved.</p>
         </div>
       </div>
     </footer>

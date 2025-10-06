@@ -39,7 +39,7 @@ const About = () => {
       <div className="container mx-auto px-4">
         {/* Header */}
         <div className="text-center mb-12">
-          <h1 className="text-4xl font-bold mb-4 text-primary">About Alber School</h1>
+          <h1 className="text-4xl font-bold mb-4 text-primary">About Albert School</h1>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
             A leading centre in Kirinyaga for holistic primary education
           </p>
@@ -52,7 +52,7 @@ const About = () => {
           </CardHeader>
           <CardContent className="space-y-4 text-muted-foreground">
             <p>
-              Alber School is a distinguished private day school located in Kutus, next to the County Government Headquarters in Kirinyaga County, Kenya. Since our establishment, we have been committed to providing quality education from Playgroup to Grade 9 under the Competency Based Curriculum (CBC).
+              Albert School is a distinguished private day school located in Kutus, next to the County Government Headquarters in Kirinyaga County, Kenya. Since our establishment, we have been committed to providing quality education from Playgroup to Grade 9 under the Competency Based Curriculum (CBC).
             </p>
             <p>
               Our school is designed to nurture the whole child—academically, socially, emotionally, and physically. We believe in creating a safe, inclusive, and stimulating environment where every student can discover and develop their unique talents.

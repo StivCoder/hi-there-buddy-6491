@@ -29,7 +29,7 @@ const Navbar = () => {
               <span className="text-accent-foreground font-bold text-xl">A</span>
             </div>
             <div>
-              <h1 className="font-bold text-lg leading-tight">Alber School</h1>
+              <h1 className="font-bold text-lg leading-tight">Albert School</h1>
               <p className="text-xs opacity-90">Kutus</p>
             </div>
           </Link>

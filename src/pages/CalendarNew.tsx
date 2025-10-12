@@ -30,7 +30,6 @@ const CalendarNew = () => {
   const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [user, setUser] = useState<any>(null);
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
 
@@ -40,14 +39,8 @@ const CalendarNew = () => {
   ];
 
   useEffect(() => {
-    checkUser();
     fetchEvents();
   }, [selectedMonth, selectedYear]);
-
-  const checkUser = async () => {
-    const { data: { session } } = await supabase.auth.getSession();
-    setUser(session?.user || null);
-  };
 
   const fetchEvents = async () => {
     const { data, error } = await supabase
@@ -120,15 +113,6 @@ const CalendarNew = () => {
 
   const handleAddEvent = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    
-    if (!user) {
-      toast({
-        title: "Authentication required",
-        description: "Please sign in to add events",
-        variant: "destructive",
-      });
-      return;
-    }
 
     setIsLoading(true);
 
@@ -152,7 +136,7 @@ const CalendarNew = () => {
           date: formData.get('date') as string,
           type: formData.get('type') as EventType,
           image_url: imageUrl,
-          created_by: user.id,
+          created_by: null,
         },
       ]);
 
@@ -239,11 +223,10 @@ const CalendarNew = () => {
             </Select>
           </div>
 
-          {user && (
-            <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-              <DialogTrigger asChild>
-                <Button>Add Event</Button>
-              </DialogTrigger>
+          <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+            <DialogTrigger asChild>
+              <Button>Add Event</Button>
+            </DialogTrigger>
               <DialogContent className="max-w-md">
                 <DialogHeader>
                   <DialogTitle>Add New Event</DialogTitle>
@@ -294,7 +277,6 @@ const CalendarNew = () => {
                 </form>
               </DialogContent>
             </Dialog>
-          )}
         </div>
 
         <div className="space-y-4">
@@ -308,15 +290,13 @@ const CalendarNew = () => {
                       {format(new Date(event.date), 'MMMM dd, yyyy')} • {event.type.toUpperCase()}
                     </p>
                   </div>
-                  {user && event.created_by === user.id && (
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      onClick={() => handleDeleteEvent(event.id)}
-                    >
-                      <Trash2 className="w-4 h-4" />
-                    </Button>
-                  )}
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    onClick={() => handleDeleteEvent(event.id)}
+                  >
+                    <Trash2 className="w-4 h-4" />
+                  </Button>
                 </div>
               </CardHeader>
               {(event.description || event.image_url) && (
@@ -342,16 +322,6 @@ const CalendarNew = () => {
           </div>
         )}
 
-        {!user && (
-          <div className="mt-8 text-center">
-            <p className="text-sm text-muted-foreground mb-4">
-              Sign in to add and manage events
-            </p>
-            <Button asChild>
-              <a href="/auth">Sign In</a>
-            </Button>
-          </div>
-        )}
       </div>
     </div>
   );

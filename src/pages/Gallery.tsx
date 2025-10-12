@@ -1,31 +1,57 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/contexts/AuthContext';
 import { Upload, Image as ImageIcon } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
+import { supabase } from '@/integrations/supabase/client';
+
+interface Event {
+  id: string;
+  title: string;
+  description: string | null;
+  date: string;
+  type: string;
+  image_url: string | null;
+}
 
 const Gallery = () => {
   const { user } = useAuth();
   const { toast } = useToast();
-  const [images] = useState([
-    { id: 1, title: 'Science Fair 2024', category: 'Events', url: '/placeholder.svg' },
-    { id: 2, title: 'Music Recital', category: 'Music', url: '/placeholder.svg' },
-    { id: 3, title: 'Sports Day', category: 'Sports', url: '/placeholder.svg' },
-    { id: 4, title: 'Graduation Ceremony', category: 'Events', url: '/placeholder.svg' },
-    { id: 5, title: 'Art Exhibition', category: 'Arts', url: '/placeholder.svg' },
-    { id: 6, title: 'Field Trip', category: 'Academics', url: '/placeholder.svg' },
-    { id: 7, title: 'School Assembly', category: 'Events', url: '/placeholder.svg' },
-    { id: 8, title: 'Library Session', category: 'Academics', url: '/placeholder.svg' },
-    { id: 9, title: 'Drama Performance', category: 'Arts', url: '/placeholder.svg' },
-  ]);
-
+  const [events, setEvents] = useState<Event[]>([]);
+  const [loading, setLoading] = useState(true);
   const [selectedCategory, setSelectedCategory] = useState('All');
-  const categories = ['All', 'Events', 'Music', 'Sports', 'Arts', 'Academics'];
+  
+  const categories = ['All', 'exam', 'function', 'festival', 'holiday', 'other'];
 
-  const filteredImages = selectedCategory === 'All' 
-    ? images 
-    : images.filter(img => img.category === selectedCategory);
+  useEffect(() => {
+    fetchEvents();
+  }, []);
+
+  const fetchEvents = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('events')
+        .select('*')
+        .order('date', { ascending: false });
+
+      if (error) throw error;
+      setEvents(data || []);
+    } catch (error) {
+      console.error('Error fetching events:', error);
+      toast({
+        title: "Error",
+        description: "Failed to load gallery images",
+        variant: "destructive",
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const filteredEvents = selectedCategory === 'All' 
+    ? events 
+    : events.filter(event => event.type === selectedCategory);
 
   const handleUpload = () => {
     toast({
@@ -69,35 +95,48 @@ const Gallery = () => {
         </div>
 
         {/* Gallery Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filteredImages.map((image) => (
-            <Card key={image.id} className="overflow-hidden hover:shadow-lg transition-shadow cursor-pointer group">
-              <CardContent className="p-0">
-                <div className="relative aspect-video bg-muted flex items-center justify-center overflow-hidden">
-                  <ImageIcon className="w-16 h-16 text-muted-foreground group-hover:scale-110 transition-transform" />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-                </div>
-                <div className="p-4">
-                  <h3 className="font-semibold text-lg mb-1">{image.title}</h3>
-                  <p className="text-sm text-primary">{image.category}</p>
-                </div>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
-
-        {filteredImages.length === 0 && (
+        {loading ? (
           <div className="text-center py-12">
-            <ImageIcon className="w-16 h-16 text-muted-foreground mx-auto mb-4" />
-            <p className="text-muted-foreground">No images found in this category</p>
+            <p className="text-muted-foreground">Loading gallery...</p>
           </div>
-        )}
+        ) : (
+          <>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {filteredEvents.map((event) => (
+                <Card key={event.id} className="overflow-hidden hover:shadow-lg transition-shadow cursor-pointer group">
+                  <CardContent className="p-0">
+                    <div className="relative aspect-video bg-muted flex items-center justify-center overflow-hidden">
+                      {event.image_url ? (
+                        <img 
+                          src={event.image_url} 
+                          alt={event.title}
+                          className="w-full h-full object-cover group-hover:scale-110 transition-transform"
+                        />
+                      ) : (
+                        <ImageIcon className="w-16 h-16 text-muted-foreground group-hover:scale-110 transition-transform" />
+                      )}
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+                    </div>
+                    <div className="p-4">
+                      <h3 className="font-semibold text-lg mb-1">{event.title}</h3>
+                      <p className="text-sm text-primary capitalize">{event.type}</p>
+                      {event.description && (
+                        <p className="text-sm text-muted-foreground mt-2">{event.description}</p>
+                      )}
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
 
-        <div className="mt-8 text-center">
-          <p className="text-sm text-muted-foreground">
-            Note: This is a demo gallery. In production, images would be loaded from backend storage.
-          </p>
-        </div>
+            {filteredEvents.length === 0 && (
+              <div className="text-center py-12">
+                <ImageIcon className="w-16 h-16 text-muted-foreground mx-auto mb-4" />
+                <p className="text-muted-foreground">No images found in this category</p>
+              </div>
+            )}
+          </>
+        )}
       </div>
     </div>
   );

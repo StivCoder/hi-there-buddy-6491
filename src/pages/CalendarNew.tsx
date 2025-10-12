@@ -260,15 +260,19 @@ const CalendarNew = () => {
                     </Select>
                   </div>
                   <div>
-                    <Label htmlFor="image">Event Image (Optional)</Label>
+                    <Label htmlFor="image">Event Media (Image or Video - Optional)</Label>
                     <Input
                       id="image"
                       type="file"
-                      accept="image/*"
+                      accept="image/*,video/*"
                       onChange={handleImageChange}
                     />
                     {imagePreview && (
-                      <img src={imagePreview} alt="Preview" className="mt-2 w-full h-40 object-cover rounded" />
+                      imageFile?.type.startsWith('video/') ? (
+                        <video src={imagePreview} controls className="mt-2 w-full h-40 rounded" />
+                      ) : (
+                        <img src={imagePreview} alt="Preview" className="mt-2 w-full h-40 object-cover rounded" />
+                      )
                     )}
                   </div>
                   <Button type="submit" className="w-full" disabled={isLoading}>
@@ -302,11 +306,19 @@ const CalendarNew = () => {
               {(event.description || event.image_url) && (
                 <CardContent>
                   {event.image_url && (
-                    <img
-                      src={event.image_url}
-                      alt={event.title}
-                      className="w-full h-48 object-cover rounded mb-4"
-                    />
+                    event.image_url.match(/\.(mp4|webm|ogg)$/i) ? (
+                      <video
+                        src={event.image_url}
+                        controls
+                        className="w-full h-48 rounded mb-4"
+                      />
+                    ) : (
+                      <img
+                        src={event.image_url}
+                        alt={event.title}
+                        className="w-full h-48 object-cover rounded mb-4"
+                      />
+                    )
                   )}
                   {event.description && <p className="text-muted-foreground">{event.description}</p>}
                 </CardContent>

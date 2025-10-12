@@ -107,11 +107,19 @@ const Gallery = () => {
                   <CardContent className="p-0">
                     <div className="relative aspect-video bg-muted flex items-center justify-center overflow-hidden">
                       {event.image_url ? (
-                        <img 
-                          src={event.image_url} 
-                          alt={event.title}
-                          className="w-full h-full object-cover group-hover:scale-110 transition-transform"
-                        />
+                        event.image_url.match(/\.(mp4|webm|ogg)$/i) ? (
+                          <video 
+                            src={event.image_url} 
+                            controls
+                            className="w-full h-full object-cover"
+                          />
+                        ) : (
+                          <img 
+                            src={event.image_url} 
+                            alt={event.title}
+                            className="w-full h-full object-cover group-hover:scale-110 transition-transform"
+                          />
+                        )
                       ) : (
                         <ImageIcon className="w-16 h-16 text-muted-foreground group-hover:scale-110 transition-transform" />
                       )}

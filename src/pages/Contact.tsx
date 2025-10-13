@@ -6,6 +6,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { MapPin, Phone, Mail, Clock } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
+import Map from '@/components/Map';
 
 const Contact = () => {
   const [name, setName] = useState('');
@@ -87,18 +88,10 @@ const Contact = () => {
               </CardContent>
             </Card>
 
-            {/* Map Placeholder */}
+            {/* Map */}
             <Card>
               <CardContent className="p-0">
-                <div className="w-full h-64 bg-muted rounded-lg flex items-center justify-center">
-                  <div className="text-center p-4">
-                    <MapPin className="w-12 h-12 text-muted-foreground mx-auto mb-2" />
-                    <p className="text-sm text-muted-foreground">
-                      Google Maps Integration<br />
-                      (Backend Integration Point)
-                    </p>
-                  </div>
-                </div>
+                <Map />
               </CardContent>
             </Card>
           </div>

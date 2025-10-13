@@ -283,56 +283,10 @@ const CalendarNew = () => {
             </Dialog>
         </div>
 
-        <div className="space-y-4">
-          {filteredEvents.map((event) => (
-            <Card key={event.id} className={`border-l-4 ${getEventTypeColor(event.type)}`}>
-              <CardHeader>
-                <div className="flex justify-between items-start">
-                  <div className="flex-1">
-                    <CardTitle className="text-xl mb-2">{event.title}</CardTitle>
-                    <p className="text-sm text-muted-foreground">
-                      {format(new Date(event.date), 'MMMM dd, yyyy')} • {event.type.toUpperCase()}
-                    </p>
-                  </div>
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    onClick={() => handleDeleteEvent(event.id)}
-                  >
-                    <Trash2 className="w-4 h-4" />
-                  </Button>
-                </div>
-              </CardHeader>
-              {(event.description || event.image_url) && (
-                <CardContent>
-                  {event.image_url && (
-                    event.image_url.match(/\.(mp4|webm|ogg)$/i) ? (
-                      <video
-                        src={event.image_url}
-                        controls
-                        className="w-full h-48 rounded mb-4"
-                      />
-                    ) : (
-                      <img
-                        src={event.image_url}
-                        alt={event.title}
-                        className="w-full h-48 object-cover rounded mb-4"
-                      />
-                    )
-                  )}
-                  {event.description && <p className="text-muted-foreground">{event.description}</p>}
-                </CardContent>
-              )}
-            </Card>
-          ))}
+        <div className="text-center py-12">
+          <CalendarIcon className="w-16 h-16 text-muted-foreground mx-auto mb-4" />
+          <p className="text-muted-foreground">Events you add will appear in the Gallery page</p>
         </div>
-
-        {filteredEvents.length === 0 && (
-          <div className="text-center py-12">
-            <CalendarIcon className="w-16 h-16 text-muted-foreground mx-auto mb-4" />
-            <p className="text-muted-foreground">No events scheduled for this month</p>
-          </div>
-        )}
 
       </div>
     </div>

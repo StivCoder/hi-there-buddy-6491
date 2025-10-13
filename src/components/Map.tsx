@@ -1,45 +1,26 @@
-import React, { useEffect, useRef } from 'react';
-import mapboxgl from 'mapbox-gl';
-import 'mapbox-gl/dist/mapbox-gl.css';
+import React from 'react';
 
 const Map = () => {
-  const mapContainer = useRef<HTMLDivElement>(null);
-  const map = useRef<mapboxgl.Map | null>(null);
-
-  useEffect(() => {
-    if (!mapContainer.current) return;
-
-    // School coordinates: Kutus, Kirinyaga County
-    const schoolCoordinates: [number, number] = [37.4328, -0.6667];
-
-    mapboxgl.accessToken = 'pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw';
-    
-    map.current = new mapboxgl.Map({
-      container: mapContainer.current,
-      style: 'mapbox://styles/mapbox/streets-v12',
-      center: schoolCoordinates,
-      zoom: 15,
-    });
-
-    // Add marker for the school
-    new mapboxgl.Marker({ color: '#0066CC' })
-      .setLngLat(schoolCoordinates)
-      .setPopup(
-        new mapboxgl.Popup({ offset: 25 })
-          .setHTML('<h3 style="margin: 0; color: #0066CC;">Albert School, Kutus</h3><p style="margin: 5px 0 0 0;">Next to County Government HQ</p>')
-      )
-      .addTo(map.current);
-
-    // Add navigation controls
-    map.current.addControl(new mapboxgl.NavigationControl(), 'top-right');
-
-    return () => {
-      map.current?.remove();
-    };
-  }, []);
+  // School coordinates: Kutus, Kirinyaga County
+  const latitude = -0.6667;
+  const longitude = 37.4328;
+  
+  // Create Google Maps embed URL
+  const mapUrl = `https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3989.7!2d${longitude}!3d${latitude}!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMMKwNDAnMDAuMSJTIDM3wrAyNScyOC4xIkU!5e0!3m2!1sen!2ske!4v1234567890`;
 
   return (
-    <div ref={mapContainer} className="w-full h-64 rounded-lg" />
+    <div className="w-full h-64 rounded-lg overflow-hidden">
+      <iframe
+        src={mapUrl}
+        width="100%"
+        height="100%"
+        style={{ border: 0 }}
+        allowFullScreen
+        loading="lazy"
+        referrerPolicy="no-referrer-when-downgrade"
+        title="Albert School Location"
+      />
+    </div>
   );
 };
 

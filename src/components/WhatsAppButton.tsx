@@ -2,15 +2,16 @@ import { MessageCircle } from 'lucide-react';
 
 const WhatsAppButton = () => {
   const handleWhatsAppClick = () => {
-    // Clean phone number (remove any spaces or special characters)
-    const phoneNumber = '254720720659';
+    const phoneNumber = '254720720659'; // Kenya country code + number
     const message = 'Hello, I would like to inquire about Albert School, Kutus.';
     
-    // Create WhatsApp URL - works on both mobile and desktop
-    const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
+    // Try both mobile and web WhatsApp URLs
+    const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+    const whatsappUrl = isMobile 
+      ? `whatsapp://send?phone=${phoneNumber}&text=${encodeURIComponent(message)}`
+      : `https://web.whatsapp.com/send?phone=${phoneNumber}&text=${encodeURIComponent(message)}`;
     
-    // Open in new tab
-    window.open(whatsappUrl, '_blank');
+    window.location.href = whatsappUrl;
   };
 
   return (

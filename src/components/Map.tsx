@@ -1,24 +1,22 @@
 import React from 'react';
 
 const Map = () => {
-  // School coordinates: Kutus, Kirinyaga County
-  const latitude = -0.6667;
-  const longitude = 37.4328;
+  // Kutus, Kirinyaga County coordinates (near County Government HQ)
+  const location = "Kutus, Kirinyaga County, Kenya";
+  const encodedLocation = encodeURIComponent(location);
   
-  // Create Google Maps embed URL
-  const mapUrl = `https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3989.7!2d${longitude}!3d${latitude}!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMMKwNDAnMDAuMSJTIDM3wrAyNScyOC4xIkU!5e0!3m2!1sen!2ske!4v1234567890`;
+  // OpenStreetMap embed using iframe (free, no API key needed)
+  const osmUrl = `https://www.openstreetmap.org/export/embed.html?bbox=37.4228%2C-0.6767%2C37.4428%2C-0.6567&layer=mapnik&marker=-0.6667%2C37.4328`;
 
   return (
-    <div className="w-full h-64 rounded-lg overflow-hidden">
+    <div className="w-full h-64 rounded-lg overflow-hidden border border-border">
       <iframe
-        src={mapUrl}
+        src={osmUrl}
         width="100%"
         height="100%"
         style={{ border: 0 }}
-        allowFullScreen
         loading="lazy"
-        referrerPolicy="no-referrer-when-downgrade"
-        title="Albert School Location"
+        title="Albert School Location - Kutus, Kirinyaga County"
       />
     </div>
   );

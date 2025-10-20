@@ -3,6 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Link } from 'react-router-dom';
 import { BookOpen, Users, Award, Music } from 'lucide-react';
 import { HeroCarousel } from '@/components/HeroCarousel';
+import { Helmet } from 'react-helmet';
 
 const Home = () => {
   const features = [
@@ -48,18 +49,38 @@ const Home = () => {
 
   return (
     <div className="min-h-screen">
+      <Helmet>
+        <title>Albert School Kutus | Best School in Kirinyaga County | CBC Excellence</title>
+        <meta name="description" content="Albert School Kutus is the best private school in Kirinyaga County, Kenya. We offer premium CBC curriculum education from Playgroup to Grade 9 with modern facilities, experienced teachers, and holistic character development in Kutus town." />
+        <script type="application/ld+json">
+          {JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "School",
+            "name": "Albert School Kutus",
+            "description": "Best private school in Kirinyaga County offering CBC curriculum from Playgroup to Grade 9",
+            "address": {
+              "@type": "PostalAddress",
+              "addressLocality": "Kutus",
+              "addressRegion": "Kirinyaga County",
+              "addressCountry": "KE"
+            },
+            "url": "https://albertschoolkutus.lovable.app"
+          })}
+        </script>
+      </Helmet>
+      
       {/* Hero Section with Carousel */}
       <HeroCarousel>
         <div className="max-w-4xl mx-auto text-center">
           <div className="mb-6">
             <h1 className="text-5xl md:text-7xl font-display font-bold mb-4 leading-tight">
-              Albert School
+              Albert School Kutus
             </h1>
-            <p className="text-2xl md:text-3xl font-display mb-2 opacity-95">Kutus, Kirinyaga</p>
+            <p className="text-2xl md:text-3xl font-display mb-2 opacity-95">Best School in Kirinyaga County</p>
           </div>
-          <p className="text-xl md:text-2xl mb-4 opacity-95 font-semibold">Nurturing Talents, Building Character</p>
+          <p className="text-xl md:text-2xl mb-4 opacity-95 font-semibold">Nurturing Talents, Building Character, Achieving Excellence</p>
           <p className="text-lg md:text-xl mb-10 opacity-90 max-w-2xl mx-auto">
-            A leading center in Kirinyaga for holistic primary education from Playgroup to Grade 9
+            Leading private school in Kutus, Kirinyaga offering premium CBC curriculum education from Playgroup to Grade 9. Join the best educational institution in Kirinyaga County for quality primary education.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link to="/about">
@@ -76,11 +97,36 @@ const Home = () => {
         </div>
       </HeroCarousel>
 
+      {/* SEO Introduction */}
+      <section className="py-16 bg-gradient-to-b from-secondary/10 to-background">
+        <div className="container mx-auto px-4">
+          <div className="max-w-4xl mx-auto text-center">
+            <h2 className="text-3xl md:text-4xl font-display font-bold mb-6 text-gradient">
+              Welcome to Albert School Kutus - Premier Education in Kirinyaga County
+            </h2>
+            <p className="text-lg md:text-xl text-foreground leading-relaxed mb-4">
+              <strong>Albert School Kutus</strong> is the <strong>best private school in Kirinyaga County, Kenya</strong>, 
+              renowned for delivering exceptional CBC curriculum education from Playgroup to Grade 9. Located in the heart of 
+              <strong> Kutus town</strong>, we have established ourselves as the <strong>top choice for quality primary education in Kirinyaga</strong>.
+            </p>
+            <p className="text-lg text-muted-foreground leading-relaxed">
+              Join hundreds of families across Kirinyaga who trust Albert School for comprehensive education that combines 
+              academic excellence, modern facilities, experienced teachers, and strong character development. Discover why we're 
+              consistently rated as the <strong>best school in Kutus, Kirinyaga County</strong>.
+            </p>
+          </div>
+        </div>
+      </section>
+
       {/* Features Section */}
       <section className="py-20 bg-background">
         <div className="container mx-auto px-4">
-          <h2 className="text-4xl md:text-5xl font-display font-bold text-center mb-4 text-gradient">Why Choose Albert School?</h2>
-          <p className="text-center text-muted-foreground mb-16 text-lg">Excellence in education, character, and holistic development</p>
+          <h2 className="text-4xl md:text-5xl font-display font-bold text-center mb-4 text-gradient">
+            Why Albert School is the Best Choice in Kirinyaga County
+          </h2>
+          <p className="text-center text-muted-foreground mb-16 text-lg">
+            Excellence in education, character building, and holistic development that sets us apart as Kirinyaga's premier institution
+          </p>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             {features.map((feature, index) => (
               <Card key={index} className="text-center hover:shadow-elegant transition-all duration-300 hover:-translate-y-2 border-2 group">
@@ -151,9 +197,10 @@ const Home = () => {
       {/* CTA Section */}
       <section className="py-16 bg-gradient-to-br from-secondary to-secondary/80 text-secondary-foreground">
         <div className="container mx-auto px-4 text-center">
-          <h2 className="text-3xl font-bold mb-4">Ready to Join Albert School?</h2>
+          <h2 className="text-3xl md:text-4xl font-bold mb-4">Ready to Join the Best School in Kirinyaga County?</h2>
           <p className="text-lg mb-8 opacity-95">
-            Enroll your child in a nurturing environment focused on excellence
+            Enroll your child at Albert School Kutus - where quality education meets character development. 
+            Experience the difference that makes us Kirinyaga's premier educational institution.
           </p>
           <Link to="/contact">
             <Button size="lg" variant="outline" className="bg-transparent border-secondary-foreground text-secondary-foreground hover:bg-secondary-foreground hover:text-secondary">

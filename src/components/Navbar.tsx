@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Menu, X, LogOut } from 'lucide-react';
 import { useState } from 'react';
 import { ThemeToggle } from './ThemeToggle';
+import albertLogo from '@/assets/albert-school-logo.png';
 
 const Navbar = () => {
   const { user, logout, isAuthenticated } = useAuth();
@@ -25,13 +26,15 @@ const Navbar = () => {
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
-          <Link to="/" className="flex items-center space-x-2">
-            <div className="w-10 h-10 bg-accent rounded-full flex items-center justify-center">
-              <span className="text-accent-foreground font-bold text-xl">A</span>
-            </div>
+          <Link to="/" className="flex items-center space-x-3 group">
+            <img 
+              src={albertLogo} 
+              alt="Albert School Kutus Logo" 
+              className="w-12 h-12 object-contain transition-transform group-hover:scale-110"
+            />
             <div>
               <h1 className="font-bold text-lg leading-tight">Albert School</h1>
-              <p className="text-xs opacity-90">Kutus</p>
+              <p className="text-xs opacity-90">Kutus, Kirinyaga</p>
             </div>
           </Link>
 

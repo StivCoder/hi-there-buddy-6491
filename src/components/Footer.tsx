@@ -48,8 +48,15 @@ const Footer = () => {
           </div>
         </div>
 
-        <div className="border-t mt-8 pt-6 text-center text-sm text-muted-foreground">
+        <div className="border-t mt-8 pt-6 text-center text-sm text-muted-foreground space-y-2">
           <p>&copy; {new Date().getFullYear()} Albert School, Kutus. All rights reserved.</p>
+          <p className="text-xs">
+            Website developed by{' '}
+            <a href="tel:+254768539745" className="text-primary hover:underline font-medium">
+              Stiv Tech Solutions
+            </a>
+            {' '}• Contact: 0768 539 745
+          </p>
         </div>
       </div>
     </footer>

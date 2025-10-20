@@ -114,6 +114,15 @@ All colors MUST be HSL.
     --shadow-lg: 0 8px 32px hsl(0 0% 0% / 0.4);
     --shadow-glow: 0 0 40px hsl(221 83% 70% / 0.4);
   }
+  
+  @keyframes zoom {
+    0%, 100% {
+      transform: scale(1.1);
+    }
+    50% {
+      transform: scale(1.15);
+    }
+  }
 }
 
 @layer base {

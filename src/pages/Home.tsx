@@ -2,6 +2,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Link } from 'react-router-dom';
 import { BookOpen, Users, Award, Music } from 'lucide-react';
+import { HeroCarousel } from '@/components/HeroCarousel';
 
 const Home = () => {
   const features = [
@@ -47,39 +48,33 @@ const Home = () => {
 
   return (
     <div className="min-h-screen">
-      {/* Hero Section */}
-      <section className="gradient-hero text-primary-foreground py-24 md:py-32 relative overflow-hidden">
-        <div className="absolute inset-0 opacity-10">
-          <div className="absolute top-10 left-10 w-72 h-72 bg-white rounded-full blur-3xl"></div>
-          <div className="absolute bottom-10 right-10 w-96 h-96 bg-secondary rounded-full blur-3xl"></div>
-        </div>
-        <div className="container mx-auto px-4 relative z-10">
-          <div className="max-w-4xl mx-auto text-center">
-            <div className="mb-6">
-              <h1 className="text-5xl md:text-7xl font-display font-bold mb-4 leading-tight">
-                Albert School
-              </h1>
-              <p className="text-2xl md:text-3xl font-display mb-2 opacity-95">Kutus, Kirinyaga</p>
-            </div>
-            <p className="text-xl md:text-2xl mb-4 opacity-95 font-semibold">Nurturing Talents, Building Character</p>
-            <p className="text-lg md:text-xl mb-10 opacity-90 max-w-2xl mx-auto">
-              A leading center in Kirinyaga for holistic primary education from Playgroup to Grade 9
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link to="/about">
-                <Button size="lg" variant="secondary" className="w-full sm:w-auto text-lg px-8 shadow-elegant hover:shadow-glow transition-all">
-                  Learn More About Us
-                </Button>
-              </Link>
-              <Link to="/contact">
-                <Button size="lg" variant="outline" className="w-full sm:w-auto text-lg px-8 bg-white/10 border-2 border-white text-white hover:bg-white hover:text-primary transition-all">
-                  Get in Touch
-                </Button>
-              </Link>
-            </div>
+      {/* Hero Section with Carousel */}
+      <HeroCarousel>
+        <div className="max-w-4xl mx-auto text-center">
+          <div className="mb-6">
+            <h1 className="text-5xl md:text-7xl font-display font-bold mb-4 leading-tight">
+              Albert School
+            </h1>
+            <p className="text-2xl md:text-3xl font-display mb-2 opacity-95">Kutus, Kirinyaga</p>
+          </div>
+          <p className="text-xl md:text-2xl mb-4 opacity-95 font-semibold">Nurturing Talents, Building Character</p>
+          <p className="text-lg md:text-xl mb-10 opacity-90 max-w-2xl mx-auto">
+            A leading center in Kirinyaga for holistic primary education from Playgroup to Grade 9
+          </p>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Link to="/about">
+              <Button size="lg" variant="secondary" className="w-full sm:w-auto text-lg px-8 shadow-elegant hover:shadow-glow transition-all">
+                Learn More About Us
+              </Button>
+            </Link>
+            <Link to="/contact">
+              <Button size="lg" variant="outline" className="w-full sm:w-auto text-lg px-8 bg-white/10 border-2 border-white text-white hover:bg-white hover:text-primary transition-all">
+                Get in Touch
+              </Button>
+            </Link>
           </div>
         </div>
-      </section>
+      </HeroCarousel>
 
       {/* Features Section */}
       <section className="py-20 bg-background">

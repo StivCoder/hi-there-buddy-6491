@@ -1,5 +1,6 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Award, Target, Heart, Users, BookOpen, Music } from 'lucide-react';
+import { Award, Target, Heart, Users, BookOpen, Music, GraduationCap, UserCheck, Quote } from 'lucide-react';
+import { Helmet } from 'react-helmet';
 const About = () => {
   const values = [{
     icon: Heart,
@@ -86,42 +87,159 @@ const About = () => {
     grade: 'Grade 8'
   }];
   return <div className="min-h-screen py-12">
+      <Helmet>
+        <title>About Albert School Kutus - Best School in Kirinyaga County | CBC Curriculum</title>
+        <meta name="description" content="Learn about Albert School Kutus, the leading primary school in Kirinyaga County with over 1000 students and 60+ qualified teaching staff. Discover our mission, vision, and commitment to excellence in education." />
+        <meta name="keywords" content="Albert School about, best school Kirinyaga, CBC curriculum Kenya, private school Kutus, quality education Kirinyaga County" />
+      </Helmet>
       <div className="container mx-auto px-4">
         {/* Header */}
-        <div className="text-center mb-12">
-          <h1 className="text-4xl font-bold mb-4 text-primary">About Albert School</h1>
+        <div className="text-center mb-12 animate-fade-in">
+          <h1 className="text-4xl md:text-5xl font-bold mb-4 text-primary">About Albert School Kutus</h1>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-            A leading centre in Kirinyaga for holistic primary education
+            The Premier Learning Institution in Kirinyaga County - Where Excellence Meets Opportunity
           </p>
         </div>
 
-        {/* School Overview */}
-        <Card className="mb-12">
+        {/* Statistics Section */}
+        <div className="grid md:grid-cols-3 gap-6 mb-12 animate-scale-in">
+          <Card className="text-center border-primary/20 hover:shadow-xl transition-all">
+            <CardContent className="pt-6">
+              <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                <Users className="w-8 h-8 text-primary" />
+              </div>
+              <h3 className="text-4xl font-bold text-primary mb-2">1000+</h3>
+              <p className="text-muted-foreground">Active Students</p>
+              <p className="text-sm text-muted-foreground mt-2">Thriving learning community</p>
+            </CardContent>
+          </Card>
+          <Card className="text-center border-secondary/20 hover:shadow-xl transition-all">
+            <CardContent className="pt-6">
+              <div className="w-16 h-16 bg-secondary/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                <UserCheck className="w-8 h-8 text-secondary" />
+              </div>
+              <h3 className="text-4xl font-bold text-secondary mb-2">60+</h3>
+              <p className="text-muted-foreground">Teaching Staff</p>
+              <p className="text-sm text-muted-foreground mt-2">Qualified & dedicated educators</p>
+            </CardContent>
+          </Card>
+          <Card className="text-center border-accent/20 hover:shadow-xl transition-all">
+            <CardContent className="pt-6">
+              <div className="w-16 h-16 bg-accent/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                <GraduationCap className="w-8 h-8 text-accent" />
+              </div>
+              <h3 className="text-4xl font-bold text-accent mb-2">12+</h3>
+              <p className="text-muted-foreground">Years of Excellence</p>
+              <p className="text-sm text-muted-foreground mt-2">Proven track record</p>
+            </CardContent>
+          </Card>
+        </div>
+
+        {/* Headteacher's Message */}
+        <Card className="mb-12 border-l-4 border-l-primary animate-fade-in">
           <CardHeader>
-            <CardTitle className="text-2xl text-primary">Our School</CardTitle>
+            <div className="flex items-center gap-3">
+              <Quote className="w-8 h-8 text-primary" />
+              <CardTitle className="text-2xl text-primary">Message from the Headteacher</CardTitle>
+            </div>
           </CardHeader>
-          <CardContent className="space-y-4 text-muted-foreground">
-            <p>
-              Albert School is a distinguished private day school located in Kutus, next to the County Government Headquarters in Kirinyaga County, Kenya. Since our establishment, we have been committed to providing quality education from Playgroup to Grade 9 under the Competency Based Curriculum (CBC).
-            </p>
-            <p>
-              Our school is designed to nurture the whole child—academically, socially, emotionally, and physically. We believe in creating a safe, inclusive, and stimulating environment where every student can discover and develop their unique talents.
-            </p>
-            <div className="grid md:grid-cols-2 gap-4 mt-6">
-              <div className="flex items-start space-x-3 bg-muted/50 p-4 rounded-lg">
-                <Music className="w-6 h-6 text-primary mt-1 flex-shrink-0" />
-                <div>
-                  <h3 className="font-semibold text-foreground mb-1">Music Education</h3>
-                  <p className="text-sm">Dedicated music rooms for both Junior and Upper Primary students</p>
+          <CardContent className="space-y-4">
+            <div className="flex items-start gap-4">
+              <div className="w-24 h-24 bg-primary/10 rounded-full flex items-center justify-center flex-shrink-0">
+                <Users className="w-12 h-12 text-primary" />
+              </div>
+              <div className="flex-1">
+                <h3 className="font-bold text-lg mb-1">Mr. John Mwangi</h3>
+                <p className="text-primary text-sm mb-4">Headteacher, Albert School Kutus</p>
+                <div className="space-y-3 text-muted-foreground italic">
+                  <p>
+                    "Welcome to Albert School Kutus, where we believe that every child has the potential to achieve greatness. As the premier educational institution in Kirinyaga County, we are committed to nurturing not just academic excellence, but also character, creativity, and critical thinking skills."
+                  </p>
+                  <p>
+                    "With over 1000 students and a dedicated team of more than 60 qualified teaching professionals, we have created a vibrant learning community that celebrates diversity, encourages innovation, and promotes holistic development. Our implementation of the Competency-Based Curriculum (CBC) ensures that our students are well-prepared for the challenges and opportunities of the 21st century."
+                  </p>
+                  <p>
+                    "At Albert School, we don't just teach subjects—we shape futures. We are proud of our state-of-the-art facilities, our commitment to individualized attention, and our track record of producing well-rounded graduates who excel in academics, sports, music, and leadership."
+                  </p>
+                  <p>
+                    "I invite you to join our growing family and experience the Albert School difference. Together, we will unlock your child's full potential."
+                  </p>
+                  <p className="font-semibold not-italic text-foreground mt-4">
+                    Elimu ni Nguvu - Knowledge is Power
+                  </p>
                 </div>
               </div>
-              <div className="flex items-start space-x-3 bg-muted/50 p-4 rounded-lg">
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* School Overview */}
+        <Card className="mb-12 animate-fade-in">
+          <CardHeader>
+            <CardTitle className="text-2xl text-primary">Why Choose Albert School Kutus?</CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-4 text-muted-foreground">
+            <p className="text-lg leading-relaxed">
+              Albert School Kutus is recognized as the <strong className="text-foreground">best school in Kirinyaga County</strong>, offering exceptional primary education from Playgroup to Grade 9. Located strategically next to the County Government Headquarters in Kutus, our institution has become the preferred choice for families seeking quality education in Central Kenya.
+            </p>
+            <p className="leading-relaxed">
+              With <strong className="text-foreground">over 1000 students</strong> and more than <strong className="text-foreground">60 highly qualified teaching professionals</strong>, Albert School has established itself as a center of educational excellence in Kirinyaga County. Our impressive student-teacher ratio ensures that every child receives personalized attention and support throughout their learning journey.
+            </p>
+            <p className="leading-relaxed">
+              As pioneers in implementing the <strong className="text-foreground">Competency-Based Curriculum (CBC)</strong> in Kirinyaga, we go beyond traditional teaching methods. Our approach focuses on developing critical thinking, creativity, communication, and collaboration skills—preparing students not just for exams, but for life success.
+            </p>
+            <p className="leading-relaxed">
+              Our state-of-the-art campus features modern classrooms, well-equipped science laboratories, extensive library resources, dedicated music rooms, spacious sports facilities, and digital learning centers. We provide a safe, nurturing, and stimulating environment where children can explore their interests, develop their talents, and build lasting friendships.
+            </p>
+            
+            <div className="grid md:grid-cols-3 gap-4 mt-6">
+              <div className="flex items-start space-x-3 bg-muted/50 p-4 rounded-lg hover:shadow-md transition-shadow">
+                <Music className="w-6 h-6 text-primary mt-1 flex-shrink-0" />
+                <div>
+                  <h3 className="font-semibold text-foreground mb-1">Music & Arts Program</h3>
+                  <p className="text-sm">Professional music education with dedicated facilities for all grade levels</p>
+                </div>
+              </div>
+              <div className="flex items-start space-x-3 bg-muted/50 p-4 rounded-lg hover:shadow-md transition-shadow">
                 <BookOpen className="w-6 h-6 text-primary mt-1 flex-shrink-0" />
                 <div>
                   <h3 className="font-semibold text-foreground mb-1">Digital Learning</h3>
-                  <p className="text-sm">Modern digital learning tools and resources</p>
+                  <p className="text-sm">Modern technology integration with smart classrooms and digital resources</p>
                 </div>
               </div>
+              <div className="flex items-start space-x-3 bg-muted/50 p-4 rounded-lg hover:shadow-md transition-shadow">
+                <Target className="w-6 h-6 text-primary mt-1 flex-shrink-0" />
+                <div>
+                  <h3 className="font-semibold text-foreground mb-1">Sports Excellence</h3>
+                  <p className="text-sm">Comprehensive sports program developing physical fitness and teamwork</p>
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-primary/5 p-6 rounded-lg mt-6 border-l-4 border-l-primary">
+              <h3 className="font-semibold text-foreground mb-3 text-lg">Our Commitment to Excellence</h3>
+              <ul className="space-y-2 text-sm">
+                <li className="flex items-start gap-2">
+                  <span className="text-primary mt-1">✓</span>
+                  <span>Small class sizes ensuring individualized attention for every student</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-primary mt-1">✓</span>
+                  <span>Continuous professional development for all teaching staff</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-primary mt-1">✓</span>
+                  <span>Regular parent-teacher communication and progress updates</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-primary mt-1">✓</span>
+                  <span>Holistic approach addressing academic, social, emotional, and physical development</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-primary mt-1">✓</span>
+                  <span>Safe and secure campus with 24/7 security and medical support</span>
+                </li>
+              </ul>
             </div>
           </CardContent>
         </Card>

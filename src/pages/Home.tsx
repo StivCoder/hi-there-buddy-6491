@@ -1,7 +1,7 @@
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Link } from 'react-router-dom';
-import { BookOpen, Users, Award, Music } from 'lucide-react';
+import { BookOpen, Users, Award, Music, GraduationCap, UserCheck } from 'lucide-react';
 import { HeroCarousel } from '@/components/HeroCarousel';
 import { Helmet } from 'react-helmet';
 
@@ -96,6 +96,38 @@ const Home = () => {
           </div>
         </div>
       </HeroCarousel>
+
+      {/* Statistics Banner */}
+      <section className="bg-gradient-to-r from-primary/10 via-secondary/10 to-primary/10 py-12 animate-fade-in">
+        <div className="container mx-auto px-4">
+          <div className="grid md:grid-cols-3 gap-8 max-w-4xl mx-auto">
+            <div className="text-center group cursor-pointer">
+              <div className="w-16 h-16 bg-primary/20 rounded-full flex items-center justify-center mx-auto mb-3 group-hover:scale-110 transition-transform">
+                <Users className="w-8 h-8 text-primary" />
+              </div>
+              <h3 className="text-4xl font-bold text-primary mb-2">1000+</h3>
+              <p className="text-muted-foreground font-medium">Happy Students</p>
+              <p className="text-sm text-muted-foreground">Learning & Growing Daily</p>
+            </div>
+            <div className="text-center group cursor-pointer">
+              <div className="w-16 h-16 bg-secondary/20 rounded-full flex items-center justify-center mx-auto mb-3 group-hover:scale-110 transition-transform">
+                <UserCheck className="w-8 h-8 text-secondary" />
+              </div>
+              <h3 className="text-4xl font-bold text-secondary mb-2">60+</h3>
+              <p className="text-muted-foreground font-medium">Expert Teachers</p>
+              <p className="text-sm text-muted-foreground">Qualified & Dedicated</p>
+            </div>
+            <div className="text-center group cursor-pointer">
+              <div className="w-16 h-16 bg-accent/20 rounded-full flex items-center justify-center mx-auto mb-3 group-hover:scale-110 transition-transform">
+                <GraduationCap className="w-8 h-8 text-accent" />
+              </div>
+              <h3 className="text-4xl font-bold text-accent mb-2">12+</h3>
+              <p className="text-muted-foreground font-medium">Years of Excellence</p>
+              <p className="text-sm text-muted-foreground">Trusted by Families</p>
+            </div>
+          </div>
+        </div>
+      </section>
 
       {/* SEO Introduction */}
       <section className="py-16 bg-gradient-to-b from-secondary/10 to-background">

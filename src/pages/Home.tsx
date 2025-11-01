@@ -4,48 +4,79 @@ import { Link } from 'react-router-dom';
 import { BookOpen, Users, Award, Music, GraduationCap, UserCheck } from 'lucide-react';
 import { HeroCarousel } from '@/components/HeroCarousel';
 import { Helmet } from 'react-helmet';
+import { supabase } from '@/integrations/supabase/client';
+import { useEffect, useState } from 'react';
+import * as LucideIcons from 'lucide-react';
 
 const Home = () => {
-  const features = [
-    {
-      icon: BookOpen,
-      title: 'CBC Curriculum',
-      description: 'Comprehensive Competency Based Curriculum from Playgroup to Grade 9',
-    },
-    {
-      icon: Users,
-      title: 'Qualified Teachers',
-      description: 'Experienced and dedicated educators committed to excellence',
-    },
-    {
-      icon: Award,
-      title: 'Character Building',
-      description: 'Holistic education focusing on values, integrity, and discipline',
-    },
-    {
-      icon: Music,
-      title: 'Talent Nurturing',
-      description: 'Music rooms and programs for both Junior and Upper Primary',
-    },
-  ];
+  const [features, setFeatures] = useState<any[]>([]);
+  const [announcements, setAnnouncements] = useState<any[]>([]);
+  const [heroContent, setHeroContent] = useState<any>(null);
+  const [stats, setStats] = useState({ students: '1000+', teachers: '60+', years: '12+' });
+  const [loading, setLoading] = useState(true);
 
-  const announcements = [
-    {
-      title: 'Term 1 2025 Registration Open',
-      date: 'January 5, 2025',
-      content: 'We are now accepting applications for Term 1, 2025. Visit our office or contact us for more information.',
-    },
-    {
-      title: 'Annual Science Fair',
-      date: 'December 15, 2024',
-      content: 'Our students showcased amazing projects at the annual science fair. Congratulations to all participants!',
-    },
-    {
-      title: 'Music Recital Success',
-      date: 'November 20, 2024',
-      content: 'The music department held a spectacular recital featuring performances from students across all grades.',
-    },
-  ];
+  useEffect(() => {
+    fetchDynamicContent();
+  }, []);
+
+  const fetchDynamicContent = async () => {
+    try {
+      // Fetch features
+      const { data: featuresData } = await supabase
+        .from('features')
+        .select('*')
+        .eq('is_active', true)
+        .order('display_order');
+      
+      // Fetch announcements
+      const { data: announcementsData } = await supabase
+        .from('announcements')
+        .select('*')
+        .eq('is_active', true)
+        .order('display_order')
+        .limit(3);
+      
+      // Fetch hero content
+      const { data: heroData } = await supabase
+        .from('hero_content')
+        .select('*')
+        .eq('is_active', true)
+        .limit(1)
+        .single();
+      
+      // Fetch site settings
+      const { data: settingsData } = await supabase
+        .from('site_settings')
+        .select('*')
+        .in('setting_key', ['student_count', 'teacher_count', 'years_excellence']);
+
+      if (featuresData) setFeatures(featuresData);
+      if (announcementsData) setAnnouncements(announcementsData);
+      if (heroData) setHeroContent(heroData);
+      
+      if (settingsData) {
+        const settingsMap = settingsData.reduce((acc: any, curr: any) => {
+          acc[curr.setting_key] = curr.setting_value;
+          return acc;
+        }, {});
+        
+        setStats({
+          students: `${settingsMap.student_count || '1000'}+`,
+          teachers: `${settingsMap.teacher_count || '60'}+`,
+          years: `${settingsMap.years_excellence || '12'}+`,
+        });
+      }
+    } catch (error) {
+      console.error('Error fetching content:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const getIconComponent = (iconName: string) => {
+    const IconComponent = (LucideIcons as any)[iconName];
+    return IconComponent || BookOpen;
+  };
 
   return (
     <div className="min-h-screen">
@@ -74,23 +105,25 @@ const Home = () => {
         <div className="max-w-4xl mx-auto text-center">
           <div className="mb-6">
             <h1 className="text-5xl md:text-7xl font-display font-bold mb-4 leading-tight">
-              Albert School Kutus
+              {heroContent?.title || 'Albert School Kutus'}
             </h1>
-            <p className="text-2xl md:text-3xl font-display mb-2 opacity-95">Best School in Kirinyaga County</p>
+            <p className="text-2xl md:text-3xl font-display mb-2 opacity-95">
+              {heroContent?.subtitle || 'Best School in Kirinyaga County'}
+            </p>
           </div>
           <p className="text-xl md:text-2xl mb-4 opacity-95 font-semibold">Nurturing Talents, Building Character, Achieving Excellence</p>
           <p className="text-lg md:text-xl mb-10 opacity-90 max-w-2xl mx-auto">
-            Leading private school in Kutus, Kirinyaga offering premium CBC curriculum education from Playgroup to Grade 9. Join the best educational institution in Kirinyaga County for quality primary education.
+            {heroContent?.description || 'Leading private school in Kutus, Kirinyaga offering premium CBC curriculum education from Playgroup to Grade 9.'}
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link to="/about">
+            <Link to={heroContent?.cta_primary_link || '/about'}>
               <Button size="lg" variant="secondary" className="w-full sm:w-auto text-lg px-8 shadow-elegant hover:shadow-glow transition-all">
-                Learn More About Us
+                {heroContent?.cta_primary_text || 'Learn More About Us'}
               </Button>
             </Link>
-            <Link to="/contact">
+            <Link to={heroContent?.cta_secondary_link || '/contact'}>
               <Button size="lg" variant="outline" className="w-full sm:w-auto text-lg px-8 bg-white/10 border-2 border-white text-white hover:bg-white hover:text-primary transition-all">
-                Get in Touch
+                {heroContent?.cta_secondary_text || 'Get in Touch'}
               </Button>
             </Link>
           </div>
@@ -105,7 +138,7 @@ const Home = () => {
               <div className="w-16 h-16 bg-primary/20 rounded-full flex items-center justify-center mx-auto mb-3 group-hover:scale-110 transition-transform">
                 <Users className="w-8 h-8 text-primary" />
               </div>
-              <h3 className="text-4xl font-bold text-primary mb-2">1000+</h3>
+              <h3 className="text-4xl font-bold text-primary mb-2">{stats.students}</h3>
               <p className="text-muted-foreground font-medium">Happy Students</p>
               <p className="text-sm text-muted-foreground">Learning & Growing Daily</p>
             </div>
@@ -113,7 +146,7 @@ const Home = () => {
               <div className="w-16 h-16 bg-secondary/20 rounded-full flex items-center justify-center mx-auto mb-3 group-hover:scale-110 transition-transform">
                 <UserCheck className="w-8 h-8 text-secondary" />
               </div>
-              <h3 className="text-4xl font-bold text-secondary mb-2">60+</h3>
+              <h3 className="text-4xl font-bold text-secondary mb-2">{stats.teachers}</h3>
               <p className="text-muted-foreground font-medium">Expert Teachers</p>
               <p className="text-sm text-muted-foreground">Qualified & Dedicated</p>
             </div>
@@ -121,7 +154,7 @@ const Home = () => {
               <div className="w-16 h-16 bg-accent/20 rounded-full flex items-center justify-center mx-auto mb-3 group-hover:scale-110 transition-transform">
                 <GraduationCap className="w-8 h-8 text-accent" />
               </div>
-              <h3 className="text-4xl font-bold text-accent mb-2">12+</h3>
+              <h3 className="text-4xl font-bold text-accent mb-2">{stats.years}</h3>
               <p className="text-muted-foreground font-medium">Years of Excellence</p>
               <p className="text-sm text-muted-foreground">Trusted by Families</p>
             </div>
@@ -160,19 +193,28 @@ const Home = () => {
             Excellence in education, character building, and holistic development that sets us apart as Kirinyaga's premier institution
           </p>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {features.map((feature, index) => (
-              <Card key={index} className="text-center hover:shadow-elegant transition-all duration-300 hover:-translate-y-2 border-2 group">
-                <CardHeader>
-                  <div className="w-20 h-20 gradient-primary rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:shadow-glow transition-shadow">
-                    <feature.icon className="w-10 h-10 text-white" />
-                  </div>
-                  <CardTitle className="text-xl font-display">{feature.title}</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-muted-foreground">{feature.description}</p>
-                </CardContent>
-              </Card>
-            ))}
+            {loading ? (
+              <div className="col-span-4 text-center py-12">
+                <p className="text-muted-foreground">Loading features...</p>
+              </div>
+            ) : (
+              features.map((feature, index) => {
+                const IconComponent = getIconComponent(feature.icon_name);
+                return (
+                  <Card key={feature.id} className="text-center hover:shadow-elegant transition-all duration-300 hover:-translate-y-2 border-2 group">
+                    <CardHeader>
+                      <div className="w-20 h-20 gradient-primary rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:shadow-glow transition-shadow">
+                        <IconComponent className="w-10 h-10 text-white" />
+                      </div>
+                      <CardTitle className="text-xl font-display">{feature.title}</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <p className="text-muted-foreground">{feature.description}</p>
+                    </CardContent>
+                  </Card>
+                );
+              })
+            )}
           </div>
         </div>
       </section>
@@ -211,17 +253,33 @@ const Home = () => {
         <div className="container mx-auto px-4">
           <h2 className="text-3xl font-bold text-center mb-12 text-primary">Latest News & Announcements</h2>
           <div className="grid md:grid-cols-3 gap-6 max-w-6xl mx-auto">
-            {announcements.map((announcement, index) => (
-              <Card key={index} className="hover:shadow-lg transition-shadow">
-                <CardHeader>
-                  <CardTitle className="text-lg">{announcement.title}</CardTitle>
-                  <p className="text-sm text-muted-foreground">{announcement.date}</p>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-sm text-muted-foreground">{announcement.content}</p>
-                </CardContent>
-              </Card>
-            ))}
+            {loading ? (
+              <div className="col-span-3 text-center py-12">
+                <p className="text-muted-foreground">Loading announcements...</p>
+              </div>
+            ) : announcements.length === 0 ? (
+              <div className="col-span-3 text-center py-12">
+                <p className="text-muted-foreground">No announcements available</p>
+              </div>
+            ) : (
+              announcements.map((announcement) => (
+                <Card key={announcement.id} className="hover:shadow-lg transition-shadow">
+                  <CardHeader>
+                    <CardTitle className="text-lg">{announcement.title}</CardTitle>
+                    <p className="text-sm text-muted-foreground">
+                      {new Date(announcement.date).toLocaleDateString('en-US', { 
+                        year: 'numeric', 
+                        month: 'long', 
+                        day: 'numeric' 
+                      })}
+                    </p>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="text-sm text-muted-foreground">{announcement.content}</p>
+                  </CardContent>
+                </Card>
+              ))
+            )}
           </div>
         </div>
       </section>

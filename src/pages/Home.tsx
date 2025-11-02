@@ -7,6 +7,8 @@ import { Helmet } from 'react-helmet';
 import { supabase } from '@/integrations/supabase/client';
 import { useEffect, useState } from 'react';
 import * as LucideIcons from 'lucide-react';
+import { AnimatedSection, AnimatedCard, StaggerContainer, StaggerItem } from '@/components/AnimatedSection';
+import { motion } from 'framer-motion';
 
 const Home = () => {
   const [features, setFeatures] = useState<any[]>([]);
@@ -131,41 +133,59 @@ const Home = () => {
       </HeroCarousel>
 
       {/* Statistics Banner */}
-      <section className="bg-gradient-to-r from-primary/10 via-secondary/10 to-primary/10 py-12 animate-fade-in">
+      <section className="bg-gradient-to-r from-primary/10 via-secondary/10 to-primary/10 py-12">
         <div className="container mx-auto px-4">
-          <div className="grid md:grid-cols-3 gap-8 max-w-4xl mx-auto">
-            <div className="text-center group cursor-pointer">
-              <div className="w-16 h-16 bg-primary/20 rounded-full flex items-center justify-center mx-auto mb-3 group-hover:scale-110 transition-transform">
-                <Users className="w-8 h-8 text-primary" />
-              </div>
-              <h3 className="text-4xl font-bold text-primary mb-2">{stats.students}</h3>
-              <p className="text-muted-foreground font-medium">Happy Students</p>
-              <p className="text-sm text-muted-foreground">Learning & Growing Daily</p>
-            </div>
-            <div className="text-center group cursor-pointer">
-              <div className="w-16 h-16 bg-secondary/20 rounded-full flex items-center justify-center mx-auto mb-3 group-hover:scale-110 transition-transform">
-                <UserCheck className="w-8 h-8 text-secondary" />
-              </div>
-              <h3 className="text-4xl font-bold text-secondary mb-2">{stats.teachers}</h3>
-              <p className="text-muted-foreground font-medium">Expert Teachers</p>
-              <p className="text-sm text-muted-foreground">Qualified & Dedicated</p>
-            </div>
-            <div className="text-center group cursor-pointer">
-              <div className="w-16 h-16 bg-accent/20 rounded-full flex items-center justify-center mx-auto mb-3 group-hover:scale-110 transition-transform">
-                <GraduationCap className="w-8 h-8 text-accent" />
-              </div>
-              <h3 className="text-4xl font-bold text-accent mb-2">{stats.years}</h3>
-              <p className="text-muted-foreground font-medium">Years of Excellence</p>
-              <p className="text-sm text-muted-foreground">Trusted by Families</p>
-            </div>
-          </div>
+          <StaggerContainer className="grid md:grid-cols-3 gap-8 max-w-4xl mx-auto">
+            <StaggerItem>
+              <motion.div 
+                className="text-center group cursor-pointer"
+                whileHover={{ scale: 1.05 }}
+                transition={{ type: "spring", stiffness: 300 }}
+              >
+                <div className="w-16 h-16 bg-primary/20 rounded-full flex items-center justify-center mx-auto mb-3 group-hover:scale-110 transition-transform">
+                  <Users className="w-8 h-8 text-primary" />
+                </div>
+                <h3 className="text-4xl font-bold text-primary mb-2">{stats.students}</h3>
+                <p className="text-muted-foreground font-medium">Happy Students</p>
+                <p className="text-sm text-muted-foreground">Learning & Growing Daily</p>
+              </motion.div>
+            </StaggerItem>
+            <StaggerItem>
+              <motion.div 
+                className="text-center group cursor-pointer"
+                whileHover={{ scale: 1.05 }}
+                transition={{ type: "spring", stiffness: 300 }}
+              >
+                <div className="w-16 h-16 bg-secondary/20 rounded-full flex items-center justify-center mx-auto mb-3 group-hover:scale-110 transition-transform">
+                  <UserCheck className="w-8 h-8 text-secondary" />
+                </div>
+                <h3 className="text-4xl font-bold text-secondary mb-2">{stats.teachers}</h3>
+                <p className="text-muted-foreground font-medium">Expert Teachers</p>
+                <p className="text-sm text-muted-foreground">Qualified & Dedicated</p>
+              </motion.div>
+            </StaggerItem>
+            <StaggerItem>
+              <motion.div 
+                className="text-center group cursor-pointer"
+                whileHover={{ scale: 1.05 }}
+                transition={{ type: "spring", stiffness: 300 }}
+              >
+                <div className="w-16 h-16 bg-accent/20 rounded-full flex items-center justify-center mx-auto mb-3 group-hover:scale-110 transition-transform">
+                  <GraduationCap className="w-8 h-8 text-accent" />
+                </div>
+                <h3 className="text-4xl font-bold text-accent mb-2">{stats.years}</h3>
+                <p className="text-muted-foreground font-medium">Years of Excellence</p>
+                <p className="text-sm text-muted-foreground">Trusted by Families</p>
+              </motion.div>
+            </StaggerItem>
+          </StaggerContainer>
         </div>
       </section>
 
       {/* SEO Introduction */}
       <section className="py-16 bg-gradient-to-b from-secondary/10 to-background">
         <div className="container mx-auto px-4">
-          <div className="max-w-4xl mx-auto text-center">
+          <AnimatedSection delay={0.2} className="max-w-4xl mx-auto text-center">
             <h2 className="text-3xl md:text-4xl font-display font-bold mb-6 text-gradient">
               Welcome to Albert School Kutus - Premier Education in Kirinyaga County
             </h2>
@@ -179,20 +199,22 @@ const Home = () => {
               academic excellence, modern facilities, experienced teachers, and strong character development. Discover why we're 
               consistently rated as the <strong>best school in Kutus, Kirinyaga County</strong>.
             </p>
-          </div>
+          </AnimatedSection>
         </div>
       </section>
 
       {/* Features Section */}
       <section className="py-20 bg-background">
         <div className="container mx-auto px-4">
-          <h2 className="text-4xl md:text-5xl font-display font-bold text-center mb-4 text-gradient">
+          <AnimatedSection direction="fade" className="text-center mb-16">
+            <h2 className="text-4xl md:text-5xl font-display font-bold mb-4 text-gradient">
             Why Albert School is the Best Choice in Kirinyaga County
-          </h2>
-          <p className="text-center text-muted-foreground mb-16 text-lg">
-            Excellence in education, character building, and holistic development that sets us apart as Kirinyaga's premier institution
-          </p>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            </h2>
+            <p className="text-muted-foreground text-lg">
+              Excellence in education, character building, and holistic development that sets us apart as Kirinyaga's premier institution
+            </p>
+          </AnimatedSection>
+          <StaggerContainer className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             {loading ? (
               <div className="col-span-4 text-center py-12">
                 <p className="text-muted-foreground">Loading features...</p>
@@ -201,30 +223,39 @@ const Home = () => {
               features.map((feature, index) => {
                 const IconComponent = getIconComponent(feature.icon_name);
                 return (
-                  <Card key={feature.id} className="text-center hover:shadow-elegant transition-all duration-300 hover:-translate-y-2 border-2 group">
-                    <CardHeader>
-                      <div className="w-20 h-20 gradient-primary rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:shadow-glow transition-shadow">
-                        <IconComponent className="w-10 h-10 text-white" />
-                      </div>
-                      <CardTitle className="text-xl font-display">{feature.title}</CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                      <p className="text-muted-foreground">{feature.description}</p>
-                    </CardContent>
-                  </Card>
+                  <StaggerItem key={feature.id}>
+                    <AnimatedCard className="h-full">
+                      <Card className="text-center border-2 h-full">
+                        <CardHeader>
+                          <motion.div 
+                            className="w-20 h-20 gradient-primary rounded-2xl flex items-center justify-center mx-auto mb-6"
+                            whileHover={{ rotate: 360, scale: 1.1 }}
+                            transition={{ duration: 0.6 }}
+                          >
+                            <IconComponent className="w-10 h-10 text-white" />
+                          </motion.div>
+                          <CardTitle className="text-xl font-display">{feature.title}</CardTitle>
+                        </CardHeader>
+                        <CardContent>
+                          <p className="text-muted-foreground">{feature.description}</p>
+                        </CardContent>
+                      </Card>
+                    </AnimatedCard>
+                  </StaggerItem>
                 );
               })
             )}
-          </div>
+          </StaggerContainer>
         </div>
       </section>
 
       {/* Mission & Vision */}
-      <section className="py-20 bg-gradient-to-br from-muted/50 to-muted/20 relative">
+      <section className="py-20 bg-gradient-to-br from-muted/50 to-muted/20 relative overflow-hidden">
         <div className="absolute inset-0 opacity-5 bg-[radial-gradient(circle_at_50%_50%,_hsl(var(--primary))_1px,_transparent_1px)] bg-[size:24px_24px]"></div>
         <div className="container mx-auto px-4 relative z-10">
           <div className="grid md:grid-cols-2 gap-8 max-w-6xl mx-auto">
-            <Card className="border-l-4 border-l-primary shadow-elegant hover:shadow-glow transition-all">
+            <AnimatedSection direction="left" delay={0.2}>
+              <Card className="border-l-4 border-l-primary shadow-elegant hover:shadow-glow transition-all h-full">
               <CardHeader>
                 <CardTitle className="text-3xl font-display text-primary mb-2">Our Vision</CardTitle>
               </CardHeader>
@@ -233,8 +264,10 @@ const Home = () => {
                   To become a leading centre in Kirinyaga for holistic primary education that nurtures every child's talents and character.
                 </p>
               </CardContent>
-            </Card>
-            <Card className="border-l-4 border-l-secondary shadow-elegant hover:shadow-glow transition-all">
+              </Card>
+            </AnimatedSection>
+            <AnimatedSection direction="right" delay={0.4}>
+              <Card className="border-l-4 border-l-secondary shadow-elegant hover:shadow-glow transition-all h-full">
               <CardHeader>
                 <CardTitle className="text-3xl font-display text-secondary mb-2">Our Mission</CardTitle>
               </CardHeader>
@@ -243,7 +276,8 @@ const Home = () => {
                   To provide a safe, inclusive, and stimulating learning environment where children from Playgroup to Grade 9 grow academically, socially, emotionally and physically under the CBC framework.
                 </p>
               </CardContent>
-            </Card>
+              </Card>
+            </AnimatedSection>
           </div>
         </div>
       </section>
@@ -251,8 +285,10 @@ const Home = () => {
       {/* Latest News */}
       <section className="py-16 bg-background">
         <div className="container mx-auto px-4">
-          <h2 className="text-3xl font-bold text-center mb-12 text-primary">Latest News & Announcements</h2>
-          <div className="grid md:grid-cols-3 gap-6 max-w-6xl mx-auto">
+          <AnimatedSection direction="fade">
+            <h2 className="text-3xl font-bold text-center mb-12 text-primary">Latest News & Announcements</h2>
+          </AnimatedSection>
+          <StaggerContainer className="grid md:grid-cols-3 gap-6 max-w-6xl mx-auto">
             {loading ? (
               <div className="col-span-3 text-center py-12">
                 <p className="text-muted-foreground">Loading announcements...</p>
@@ -263,40 +299,66 @@ const Home = () => {
               </div>
             ) : (
               announcements.map((announcement) => (
-                <Card key={announcement.id} className="hover:shadow-lg transition-shadow">
-                  <CardHeader>
-                    <CardTitle className="text-lg">{announcement.title}</CardTitle>
-                    <p className="text-sm text-muted-foreground">
-                      {new Date(announcement.date).toLocaleDateString('en-US', { 
-                        year: 'numeric', 
-                        month: 'long', 
-                        day: 'numeric' 
-                      })}
-                    </p>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-sm text-muted-foreground">{announcement.content}</p>
-                  </CardContent>
-                </Card>
+                <StaggerItem key={announcement.id}>
+                  <AnimatedCard className="h-full">
+                    <Card className="h-full">
+                      <CardHeader>
+                        <CardTitle className="text-lg">{announcement.title}</CardTitle>
+                        <p className="text-sm text-muted-foreground">
+                          {new Date(announcement.date).toLocaleDateString('en-US', { 
+                            year: 'numeric', 
+                            month: 'long', 
+                            day: 'numeric' 
+                          })}
+                        </p>
+                      </CardHeader>
+                      <CardContent>
+                        <p className="text-sm text-muted-foreground">{announcement.content}</p>
+                      </CardContent>
+                    </Card>
+                  </AnimatedCard>
+                </StaggerItem>
               ))
             )}
-          </div>
+          </StaggerContainer>
         </div>
       </section>
 
       {/* CTA Section */}
-      <section className="py-16 bg-gradient-to-br from-secondary to-secondary/80 text-secondary-foreground">
-        <div className="container mx-auto px-4 text-center">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">Ready to Join the Best School in Kirinyaga County?</h2>
-          <p className="text-lg mb-8 opacity-95">
-            Enroll your child at Albert School Kutus - where quality education meets character development. 
-            Experience the difference that makes us Kirinyaga's premier educational institution.
-          </p>
-          <Link to="/contact">
-            <Button size="lg" variant="outline" className="bg-transparent border-secondary-foreground text-secondary-foreground hover:bg-secondary-foreground hover:text-secondary">
-              Contact Us Today
-            </Button>
-          </Link>
+      <section className="py-16 bg-gradient-to-br from-secondary to-secondary/80 text-secondary-foreground relative overflow-hidden">
+        <motion.div 
+          className="absolute inset-0 opacity-10"
+          animate={{ 
+            backgroundPosition: ['0% 0%', '100% 100%'],
+          }}
+          transition={{ 
+            duration: 20, 
+            repeat: Infinity, 
+            repeatType: 'reverse' 
+          }}
+          style={{
+            backgroundImage: 'radial-gradient(circle, white 1px, transparent 1px)',
+            backgroundSize: '50px 50px'
+          }}
+        />
+        <div className="container mx-auto px-4 text-center relative z-10">
+          <AnimatedSection direction="up" delay={0.2}>
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">Ready to Join the Best School in Kirinyaga County?</h2>
+            <p className="text-lg mb-8 opacity-95">
+              Enroll your child at Albert School Kutus - where quality education meets character development. 
+              Experience the difference that makes us Kirinyaga's premier educational institution.
+            </p>
+            <motion.div
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              <Link to="/contact">
+                <Button size="lg" variant="outline" className="bg-transparent border-secondary-foreground text-secondary-foreground hover:bg-secondary-foreground hover:text-secondary">
+                  Contact Us Today
+                </Button>
+              </Link>
+            </motion.div>
+          </AnimatedSection>
         </div>
       </section>
     </div>

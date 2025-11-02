@@ -1,6 +1,8 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Award, Target, Heart, Users, BookOpen, Music, GraduationCap, UserCheck, Quote } from 'lucide-react';
 import { Helmet } from 'react-helmet';
+import { AnimatedSection, AnimatedCard, StaggerContainer, StaggerItem } from '@/components/AnimatedSection';
+import { motion } from 'framer-motion';
 const About = () => {
   const values = [{
     icon: Heart,
@@ -94,49 +96,74 @@ const About = () => {
       </Helmet>
       <div className="container mx-auto px-4">
         {/* Header */}
-        <div className="text-center mb-12 animate-fade-in">
+        <AnimatedSection direction="fade" className="text-center mb-12">
           <h1 className="text-4xl md:text-5xl font-bold mb-4 text-primary">About Albert School Kutus</h1>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
             The Premier Learning Institution in Kirinyaga County - Where Excellence Meets Opportunity
           </p>
-        </div>
+        </AnimatedSection>
 
         {/* Statistics Section */}
-        <div className="grid md:grid-cols-3 gap-6 mb-12 animate-scale-in">
-          <Card className="text-center border-primary/20 hover:shadow-xl transition-all">
-            <CardContent className="pt-6">
-              <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Users className="w-8 h-8 text-primary" />
-              </div>
-              <h3 className="text-4xl font-bold text-primary mb-2">1000+</h3>
-              <p className="text-muted-foreground">Active Students</p>
-              <p className="text-sm text-muted-foreground mt-2">Thriving learning community</p>
-            </CardContent>
-          </Card>
-          <Card className="text-center border-secondary/20 hover:shadow-xl transition-all">
-            <CardContent className="pt-6">
-              <div className="w-16 h-16 bg-secondary/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                <UserCheck className="w-8 h-8 text-secondary" />
-              </div>
-              <h3 className="text-4xl font-bold text-secondary mb-2">60+</h3>
-              <p className="text-muted-foreground">Teaching Staff</p>
-              <p className="text-sm text-muted-foreground mt-2">Qualified & dedicated educators</p>
-            </CardContent>
-          </Card>
-          <Card className="text-center border-accent/20 hover:shadow-xl transition-all">
-            <CardContent className="pt-6">
-              <div className="w-16 h-16 bg-accent/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                <GraduationCap className="w-8 h-8 text-accent" />
-              </div>
-              <h3 className="text-4xl font-bold text-accent mb-2">12+</h3>
-              <p className="text-muted-foreground">Years of Excellence</p>
-              <p className="text-sm text-muted-foreground mt-2">Proven track record</p>
-            </CardContent>
-          </Card>
-        </div>
+        <StaggerContainer className="grid md:grid-cols-3 gap-6 mb-12">
+          <StaggerItem>
+            <AnimatedCard>
+              <Card className="text-center border-primary/20 h-full">
+                <CardContent className="pt-6">
+                  <motion.div 
+                    className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4"
+                    whileHover={{ scale: 1.2, rotate: 360 }}
+                    transition={{ duration: 0.5 }}
+                  >
+                    <Users className="w-8 h-8 text-primary" />
+                  </motion.div>
+                  <h3 className="text-4xl font-bold text-primary mb-2">1000+</h3>
+                  <p className="text-muted-foreground">Active Students</p>
+                  <p className="text-sm text-muted-foreground mt-2">Thriving learning community</p>
+                </CardContent>
+              </Card>
+            </AnimatedCard>
+          </StaggerItem>
+          <StaggerItem>
+            <AnimatedCard>
+              <Card className="text-center border-secondary/20 h-full">
+                <CardContent className="pt-6">
+                  <motion.div 
+                    className="w-16 h-16 bg-secondary/10 rounded-full flex items-center justify-center mx-auto mb-4"
+                    whileHover={{ scale: 1.2, rotate: 360 }}
+                    transition={{ duration: 0.5 }}
+                  >
+                    <UserCheck className="w-8 h-8 text-secondary" />
+                  </motion.div>
+                  <h3 className="text-4xl font-bold text-secondary mb-2">60+</h3>
+                  <p className="text-muted-foreground">Teaching Staff</p>
+                  <p className="text-sm text-muted-foreground mt-2">Qualified & dedicated educators</p>
+                </CardContent>
+              </Card>
+            </AnimatedCard>
+          </StaggerItem>
+          <StaggerItem>
+            <AnimatedCard>
+              <Card className="text-center border-accent/20 h-full">
+                <CardContent className="pt-6">
+                  <motion.div 
+                    className="w-16 h-16 bg-accent/10 rounded-full flex items-center justify-center mx-auto mb-4"
+                    whileHover={{ scale: 1.2, rotate: 360 }}
+                    transition={{ duration: 0.5 }}
+                  >
+                    <GraduationCap className="w-8 h-8 text-accent" />
+                  </motion.div>
+                  <h3 className="text-4xl font-bold text-accent mb-2">12+</h3>
+                  <p className="text-muted-foreground">Years of Excellence</p>
+                  <p className="text-sm text-muted-foreground mt-2">Proven track record</p>
+                </CardContent>
+              </Card>
+            </AnimatedCard>
+          </StaggerItem>
+        </StaggerContainer>
 
         {/* Headteacher's Message */}
-        <Card className="mb-12 border-l-4 border-l-primary animate-fade-in">
+        <AnimatedSection direction="up" delay={0.3}>
+          <Card className="mb-12 border-l-4 border-l-primary">
           <CardHeader>
             <div className="flex items-center gap-3">
               <Quote className="w-8 h-8 text-primary" />
@@ -171,10 +198,12 @@ const About = () => {
               </div>
             </div>
           </CardContent>
-        </Card>
+          </Card>
+        </AnimatedSection>
 
         {/* School Overview */}
-        <Card className="mb-12 animate-fade-in">
+        <AnimatedSection direction="left" delay={0.2}>
+          <Card className="mb-12">
           <CardHeader>
             <CardTitle className="text-2xl text-primary">Why Choose Albert School Kutus?</CardTitle>
           </CardHeader>
@@ -242,58 +271,72 @@ const About = () => {
               </ul>
             </div>
           </CardContent>
-        </Card>
+          </Card>
+        </AnimatedSection>
 
         {/* Vision, Mission, Motto */}
-        <div className="grid md:grid-cols-3 gap-6 mb-12">
-          <Card className="border-t-4 border-t-primary">
-            <CardHeader>
-              <CardTitle className="text-xl text-primary">Vision</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="text-muted-foreground">
-                To become a leading centre in Kirinyaga for holistic primary education that nurtures every child's talents and character.
-              </p>
-            </CardContent>
-          </Card>
-          <Card className="border-t-4 border-t-secondary">
-            <CardHeader>
-              <CardTitle className="text-xl text-secondary">Mission</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="text-muted-foreground">
-                To provide a safe, inclusive, and stimulating learning environment where children from Playgroup to Grade 9 grow academically, socially, emotionally and physically under the CBC framework.
-              </p>
-            </CardContent>
-          </Card>
-          <Card className="border-t-4 border-t-accent">
-            <CardHeader>
-              <CardTitle className="text-xl text-accent-foreground">Motto</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="text-2xl font-bold text-primary text-center py-4">'Elimu ni Nguvu'
-
-            </p>
-            </CardContent>
-          </Card>
-        </div>
+        <StaggerContainer className="grid md:grid-cols-3 gap-6 mb-12">
+          <StaggerItem>
+            <AnimatedCard className="h-full">
+              <Card className="border-t-4 border-t-primary h-full">
+                <CardHeader>
+                  <CardTitle className="text-xl text-primary">Vision</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-muted-foreground">
+                    To become a leading centre in Kirinyaga for holistic primary education that nurtures every child's talents and character.
+                  </p>
+                </CardContent>
+              </Card>
+            </AnimatedCard>
+          </StaggerItem>
+          <StaggerItem>
+            <AnimatedCard className="h-full">
+              <Card className="border-t-4 border-t-secondary h-full">
+                <CardHeader>
+                  <CardTitle className="text-xl text-secondary">Mission</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-muted-foreground">
+                    To provide a safe, inclusive, and stimulating learning environment where children from Playgroup to Grade 9 grow academically, socially, emotionally and physically under the CBC framework.
+                  </p>
+                </CardContent>
+              </Card>
+            </AnimatedCard>
+          </StaggerItem>
+          <StaggerItem>
+            <AnimatedCard className="h-full">
+              <Card className="border-t-4 border-t-accent h-full">
+                <CardHeader>
+                  <CardTitle className="text-xl text-accent-foreground">Motto</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-2xl font-bold text-primary text-center py-4">'Elimu ni Nguvu'
+                  </p>
+                </CardContent>
+              </Card>
+            </AnimatedCard>
+          </StaggerItem>
+        </StaggerContainer>
 
         {/* Core Values */}
-        <Card className="mb-12">
-          <CardHeader>
-            <CardTitle className="text-2xl text-primary text-center">Our Core Values</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-              {values.map((value, index) => <div key={index} className="text-center">
-                  <div className={`w-16 h-16 ${value.color} bg-opacity-10 rounded-full flex items-center justify-center mx-auto mb-3`}>
-                    <value.icon className={`w-8 h-8 ${value.color}`} />
-                  </div>
-                  <p className="font-semibold text-sm">{value.title}</p>
-                </div>)}
-            </div>
-          </CardContent>
-        </Card>
+        <AnimatedSection direction="up" delay={0.2}>
+          <Card className="mb-12">
+            <CardHeader>
+              <CardTitle className="text-2xl text-primary text-center">Our Core Values</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+                {values.map((value, index) => <div key={index} className="text-center">
+                    <div className={`w-16 h-16 ${value.color} bg-opacity-10 rounded-full flex items-center justify-center mx-auto mb-3`}>
+                      <value.icon className={`w-8 h-8 ${value.color}`} />
+                    </div>
+                    <p className="font-semibold text-sm">{value.title}</p>
+                  </div>)}
+              </div>
+            </CardContent>
+          </Card>
+        </AnimatedSection>
 
         {/* Management */}
         <Card className="mb-12">

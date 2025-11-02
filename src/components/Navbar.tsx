@@ -59,16 +59,28 @@ const Navbar = () => {
             {isAuthenticated ? (
               <>
                 {user?.role === 'admin' && (
-                  <Link
-                    to="/dashboard"
-                    className={`px-4 py-2 rounded-md transition-colors ${
-                      isActive('/dashboard')
-                        ? 'bg-primary-foreground/20 font-medium'
-                        : 'hover:bg-primary-foreground/10'
-                    }`}
-                  >
-                    Dashboard
-                  </Link>
+                  <>
+                    <Link
+                      to="/dashboard"
+                      className={`px-4 py-2 rounded-md transition-colors ${
+                        isActive('/dashboard')
+                          ? 'bg-primary-foreground/20 font-medium'
+                          : 'hover:bg-primary-foreground/10'
+                      }`}
+                    >
+                      Dashboard
+                    </Link>
+                    <Link
+                      to="/content-manager"
+                      className={`px-4 py-2 rounded-md transition-colors ${
+                        isActive('/content-manager')
+                          ? 'bg-primary-foreground/20 font-medium'
+                          : 'hover:bg-primary-foreground/10'
+                      }`}
+                    >
+                      Content Manager
+                    </Link>
+                  </>
                 )}
                 <Button
                   onClick={logout}
@@ -123,17 +135,30 @@ const Navbar = () => {
               {isAuthenticated ? (
                 <>
                   {user?.role === 'admin' && (
-                    <Link
-                      to="/dashboard"
-                      onClick={() => setMobileMenuOpen(false)}
-                      className={`px-4 py-2 rounded-md transition-colors ${
-                        isActive('/dashboard')
-                          ? 'bg-primary-foreground/20 font-medium'
-                          : 'hover:bg-primary-foreground/10'
-                      }`}
-                    >
-                      Dashboard
-                    </Link>
+                    <>
+                      <Link
+                        to="/dashboard"
+                        onClick={() => setMobileMenuOpen(false)}
+                        className={`px-4 py-2 rounded-md transition-colors ${
+                          isActive('/dashboard')
+                            ? 'bg-primary-foreground/20 font-medium'
+                            : 'hover:bg-primary-foreground/10'
+                        }`}
+                      >
+                        Dashboard
+                      </Link>
+                      <Link
+                        to="/content-manager"
+                        onClick={() => setMobileMenuOpen(false)}
+                        className={`px-4 py-2 rounded-md transition-colors ${
+                          isActive('/content-manager')
+                            ? 'bg-primary-foreground/20 font-medium'
+                            : 'hover:bg-primary-foreground/10'
+                        }`}
+                      >
+                        Content Manager
+                      </Link>
+                    </>
                   )}
                   <button
                     onClick={() => {

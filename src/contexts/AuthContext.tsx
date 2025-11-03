@@ -1,65 +1,74 @@
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import { User, Session } from '@supabase/supabase-js';
+import { supabase } from '@/integrations/supabase/client';
 
 export type UserRole = 'admin' | 'teacher' | 'student' | 'parent' | null;
 
-interface User {
-  email: string;
-  role: UserRole;
-  name: string;
-}
-
 interface AuthContextType {
   user: User | null;
-  login: (email: string, password: string) => boolean;
-  logout: () => void;
+  session: Session | null;
+  login: (email: string, password: string) => Promise<{ error: any }>;
+  signup: (email: string, password: string, name: string) => Promise<{ error: any }>;
+  logout: () => Promise<void>;
   isAuthenticated: boolean;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-// Mock users database
-const MOCK_USERS = [
-  { email: 'admin@alber.school', password: 'admin123', role: 'admin' as UserRole, name: 'Admin User' },
-  { email: 'teacher@alber.school', password: 'teacher123', role: 'teacher' as UserRole, name: 'Teacher User' },
-  { email: 'student@alber.school', password: 'student123', role: 'student' as UserRole, name: 'Student User' },
-  { email: 'parent@alber.school', password: 'parent123', role: 'parent' as UserRole, name: 'Parent User' },
-];
-
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
+  const [session, setSession] = useState<Session | null>(null);
 
   useEffect(() => {
-    const savedUser = localStorage.getItem('alber_user');
-    if (savedUser) {
-      setUser(JSON.parse(savedUser));
-    }
+    // Set up auth state listener
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(
+      (event, session) => {
+        setSession(session);
+        setUser(session?.user ?? null);
+      }
+    );
+
+    // Check for existing session
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setSession(session);
+      setUser(session?.user ?? null);
+    });
+
+    return () => subscription.unsubscribe();
   }, []);
 
-  const login = (email: string, password: string): boolean => {
-    const foundUser = MOCK_USERS.find(
-      u => u.email === email && u.password === password
-    );
-    
-    if (foundUser) {
-      const userData = {
-        email: foundUser.email,
-        role: foundUser.role,
-        name: foundUser.name,
-      };
-      setUser(userData);
-      localStorage.setItem('alber_user', JSON.stringify(userData));
-      return true;
-    }
-    return false;
+  const login = async (email: string, password: string) => {
+    const { error } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    });
+    return { error };
   };
 
-  const logout = () => {
+  const signup = async (email: string, password: string, name: string) => {
+    const redirectUrl = `${window.location.origin}/`;
+    
+    const { error } = await supabase.auth.signUp({
+      email,
+      password,
+      options: {
+        emailRedirectTo: redirectUrl,
+        data: {
+          name: name,
+        }
+      }
+    });
+    return { error };
+  };
+
+  const logout = async () => {
+    await supabase.auth.signOut();
     setUser(null);
-    localStorage.removeItem('alber_user');
+    setSession(null);
   };
 
   return (
-    <AuthContext.Provider value={{ user, login, logout, isAuthenticated: !!user }}>
+    <AuthContext.Provider value={{ user, session, login, signup, logout, isAuthenticated: !!user }}>
       {children}
     </AuthContext.Provider>
   );

@@ -88,7 +88,7 @@ const Dashboard = () => {
       <div className="container mx-auto px-4">
         <div className="mb-8">
           <h1 className="text-4xl font-bold mb-2 text-primary">Admin Dashboard</h1>
-          <p className="text-muted-foreground">Welcome back, {user?.name}</p>
+          <p className="text-muted-foreground">Welcome back, {user?.user_metadata?.name || user?.email}</p>
         </div>
 
         {/* Stats Overview */}

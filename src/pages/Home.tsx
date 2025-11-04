@@ -44,7 +44,7 @@ const Home = () => {
         .select('*')
         .eq('is_active', true)
         .limit(1)
-        .single();
+        .maybeSingle();
       
       // Fetch site settings
       const { data: settingsData } = await supabase

@@ -5,6 +5,12 @@ import { useAuth } from '@/contexts/AuthContext';
 import { Upload, Image as ImageIcon } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
+import scienceLabImg from '@/assets/gallery-science-lab.jpg';
+import classroomImg from '@/assets/gallery-classroom.jpg';
+import computerLabImg from '@/assets/gallery-computer-lab.jpg';
+import playgroundImg from '@/assets/gallery-playground.jpg';
+import libraryImg from '@/assets/gallery-library.jpg';
+import artClassImg from '@/assets/gallery-art-class.jpg';
 
 interface Event {
   id: string;
@@ -14,6 +20,58 @@ interface Event {
   type: string;
   image_url: string | null;
 }
+
+// Default gallery images showcasing school facilities
+const defaultGalleryItems = [
+  {
+    id: 'default-1',
+    title: 'Science Laboratory Class',
+    description: 'Students conducting exciting experiments in our modern science lab',
+    date: '2024-03-15',
+    type: 'other',
+    image_url: scienceLabImg,
+  },
+  {
+    id: 'default-2',
+    title: 'Active Classroom Learning',
+    description: 'Engaged students participating enthusiastically in classroom activities',
+    date: '2024-03-10',
+    type: 'other',
+    image_url: classroomImg,
+  },
+  {
+    id: 'default-3',
+    title: 'Computer Lab Session',
+    description: 'Students learning digital skills in our state-of-the-art computer lab',
+    date: '2024-03-08',
+    type: 'other',
+    image_url: computerLabImg,
+  },
+  {
+    id: 'default-4',
+    title: 'Outdoor Sports & Recreation',
+    description: 'Children enjoying outdoor activities and building teamwork skills',
+    date: '2024-03-05',
+    type: 'other',
+    image_url: playgroundImg,
+  },
+  {
+    id: 'default-5',
+    title: 'Library Study Time',
+    description: 'Students developing reading habits in our well-stocked library',
+    date: '2024-03-01',
+    type: 'other',
+    image_url: libraryImg,
+  },
+  {
+    id: 'default-6',
+    title: 'Creative Arts Class',
+    description: 'Young artists expressing creativity through painting and drawing',
+    date: '2024-02-28',
+    type: 'other',
+    image_url: artClassImg,
+  },
+];
 
 const Gallery = () => {
   const { user } = useAuth();
@@ -36,14 +94,14 @@ const Gallery = () => {
         .order('date', { ascending: false });
 
       if (error) throw error;
-      setEvents(data || []);
+      
+      // Combine database events with default gallery items
+      const allEvents = [...defaultGalleryItems, ...(data || [])];
+      setEvents(allEvents);
     } catch (error) {
       console.error('Error fetching events:', error);
-      toast({
-        title: "Error",
-        description: "Failed to load gallery images",
-        variant: "destructive",
-      });
+      // If database fetch fails, just show default gallery
+      setEvents(defaultGalleryItems);
     } finally {
       setLoading(false);
     }

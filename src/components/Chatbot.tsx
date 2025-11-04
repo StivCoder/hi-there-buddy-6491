@@ -10,7 +10,7 @@ type Message = { role: "user" | "assistant"; content: string };
 const Chatbot = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState<Message[]>([
-    { role: "assistant", content: "Hello! I'm here to help you with any questions about Albert School. How can I assist you today?" }
+    { role: "assistant", content: "Hello! I'm Zena, here to help you with any questions about Albert School. How can I assist you today?" }
   ]);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -136,7 +136,7 @@ const Chatbot = () => {
           <div className="flex items-center justify-between p-4 border-b bg-primary text-primary-foreground rounded-t-lg">
             <div className="flex items-center gap-2">
               <MessageCircle className="w-5 h-5" />
-              <h3 className="font-semibold">Albert School Assistant</h3>
+              <h3 className="font-semibold">Zena</h3>
             </div>
             <Button
               variant="ghost"

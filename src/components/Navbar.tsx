@@ -17,6 +17,8 @@ const Navbar = () => {
     { to: '/gallery', label: 'Gallery' },
     { to: '/calendar', label: 'Calendar' },
     { to: '/contact', label: 'Contact' },
+    { to: '/admission', label: 'Admissions' },
+    { to: '/portal/login', label: 'Parent Portal' },
   ];
 
   const isActive = (path: string) => location.pathname === path;

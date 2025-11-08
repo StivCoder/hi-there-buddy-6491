@@ -18,6 +18,9 @@ import Login from "./pages/Login";
 import Auth from "./pages/Auth";
 import NotFound from "./pages/NotFound";
 import ContentManager from "./pages/ContentManager";
+import ParentLogin from "./pages/ParentLogin";
+import ParentDashboard from "./pages/ParentDashboard";
+import AdmissionForm from "./pages/AdmissionForm";
 
 const queryClient = new QueryClient();
 
@@ -40,6 +43,9 @@ const App = () => (
               <Route path="/content-manager" element={<ContentManager />} />
               <Route path="/login" element={<Login />} />
               <Route path="/auth" element={<Auth />} />
+              <Route path="/portal/login" element={<ParentLogin />} />
+              <Route path="/portal/parent-dashboard" element={<ParentDashboard />} />
+              <Route path="/admission" element={<AdmissionForm />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
             <Footer />

@@ -14,6 +14,7 @@ import Contact from "./pages/Contact";
 import Gallery from "./pages/Gallery";
 import CalendarNew from "./pages/CalendarNew";
 import Dashboard from "./pages/Dashboard";
+import TeacherDashboard from "./pages/TeacherDashboard";
 import Login from "./pages/Login";
 import Auth from "./pages/Auth";
 import NotFound from "./pages/NotFound";
@@ -39,7 +40,8 @@ const App = () => (
               <Route path="/contact" element={<Contact />} />
               <Route path="/gallery" element={<Gallery />} />
               <Route path="/calendar" element={<CalendarNew />} />
-              <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/teacher-dashboard" element={<TeacherDashboard />} />
               <Route path="/content-manager" element={<ContentManager />} />
               <Route path="/login" element={<Login />} />
               <Route path="/auth" element={<Auth />} />

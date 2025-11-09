@@ -18,7 +18,8 @@ const Navbar = () => {
     { to: '/calendar', label: 'Calendar' },
     { to: '/contact', label: 'Contact' },
     { to: '/admission', label: 'Admissions' },
-    { to: '/portal/login', label: 'Parent Portal' },
+    { to: '/portal/parent-login', label: 'Parent Portal' },
+    { to: '/teacher-dashboard', label: 'Staff Portal' },
   ];
 
   const isActive = (path: string) => location.pathname === path;

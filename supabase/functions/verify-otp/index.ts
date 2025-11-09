@@ -10,6 +10,9 @@ const corsHeaders = {
 interface VerifyOTPRequest {
   phoneNumber: string;
   otpCode: string;
+  isSignup?: boolean;
+  fullName?: string;
+  email?: string;
 }
 
 // Hash OTP code for comparison
@@ -27,7 +30,7 @@ const handler = async (req: Request): Promise<Response> => {
   }
 
   try {
-    const { phoneNumber, otpCode }: VerifyOTPRequest = await req.json();
+    const { phoneNumber, otpCode, isSignup, fullName, email }: VerifyOTPRequest = await req.json();
 
     console.log("OTP verification for phone:", phoneNumber);
 
@@ -124,11 +127,47 @@ const handler = async (req: Request): Promise<Response> => {
       .eq("phone_number", phoneNumber)
       .single();
 
-    if (parentError || !parent) {
+    let parentRecord = parent;
+
+    // If parent doesn't exist and this is a signup, create parent account
+    if ((parentError || !parent) && isSignup) {
+      if (!fullName) {
+        return new Response(
+          JSON.stringify({ error: "Full name is required for signup" }),
+          {
+            status: 400,
+            headers: { "Content-Type": "application/json", ...corsHeaders },
+          }
+        );
+      }
+
+      const { data: newParent, error: createError } = await supabase
+        .from("parents")
+        .insert({
+          phone_number: phoneNumber,
+          full_name: fullName,
+          email: email || null,
+        })
+        .select("*, students(*)")
+        .single();
+
+      if (createError) {
+        console.error("Error creating parent:", createError);
+        return new Response(
+          JSON.stringify({ error: "Failed to create parent account" }),
+          {
+            status: 500,
+            headers: { "Content-Type": "application/json", ...corsHeaders },
+          }
+        );
+      }
+
+      parentRecord = newParent;
+    } else if (parentError || !parent) {
       return new Response(
         JSON.stringify({
           error:
-            "No parent account found with this phone number. Please contact the school.",
+            "No parent account found with this phone number. Please sign up first.",
         }),
         {
           status: 404,
@@ -139,17 +178,17 @@ const handler = async (req: Request): Promise<Response> => {
 
     // Create or get auth session (passwordless)
     let authData;
-    if (parent.user_id) {
+    if (parentRecord.user_id) {
       // Get existing session
       const { data, error } = await supabase.auth.admin.generateLink({
         type: "magiclink",
-        email: parent.email || `${phoneNumber}@albertschool.portal`,
+        email: parentRecord.email || `${phoneNumber}@albertschool.portal`,
       });
       authData = data;
     } else {
       // Create new user and link to parent
       const { data, error } = await supabase.auth.admin.createUser({
-        email: parent.email || `${phoneNumber}@albertschool.portal`,
+        email: parentRecord.email || `${phoneNumber}@albertschool.portal`,
         phone: phoneNumber,
         email_confirm: true,
         phone_confirm: true,
@@ -160,7 +199,7 @@ const handler = async (req: Request): Promise<Response> => {
         await supabase
           .from("parents")
           .update({ user_id: data.user.id })
-          .eq("parent_id", parent.parent_id);
+          .eq("parent_id", parentRecord.parent_id);
 
         // Add parent role
         await supabase.from("user_roles").insert({
@@ -178,11 +217,11 @@ const handler = async (req: Request): Promise<Response> => {
       JSON.stringify({
         message: "OTP verified successfully",
         parent: {
-          parent_id: parent.parent_id,
-          full_name: parent.full_name,
-          phone_number: parent.phone_number,
-          email: parent.email,
-          students: parent.students,
+          parent_id: parentRecord.parent_id,
+          full_name: parentRecord.full_name,
+          phone_number: parentRecord.phone_number,
+          email: parentRecord.email,
+          students: parentRecord.students,
         },
         verified: true,
       }),

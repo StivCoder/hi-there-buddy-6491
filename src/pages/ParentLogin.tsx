@@ -11,8 +11,11 @@ import { Phone, Shield } from 'lucide-react';
 const ParentLogin = () => {
   const [phoneNumber, setPhoneNumber] = useState('');
   const [otpCode, setOtpCode] = useState('');
+  const [fullName, setFullName] = useState('');
+  const [email, setEmail] = useState('');
   const [otpSent, setOtpSent] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [isSignup, setIsSignup] = useState(false);
   const [expiresAt, setExpiresAt] = useState<string | null>(null);
   const navigate = useNavigate();
   const { toast } = useToast();
@@ -62,10 +65,25 @@ const ParentLogin = () => {
       return;
     }
 
+    if (isSignup && (!fullName || !email)) {
+      toast({
+        title: "Error",
+        description: "Please provide your full name and email",
+        variant: "destructive",
+      });
+      return;
+    }
+
     setLoading(true);
     try {
       const { data, error } = await supabase.functions.invoke('verify-otp', {
-        body: { phoneNumber, otpCode },
+        body: { 
+          phoneNumber, 
+          otpCode,
+          isSignup,
+          fullName: isSignup ? fullName : undefined,
+          email: isSignup ? email : undefined
+        },
       });
 
       if (error) throw error;
@@ -74,7 +92,7 @@ const ParentLogin = () => {
         localStorage.setItem('portal_parent', JSON.stringify(data.parent));
         toast({
           title: "Success",
-          description: "Login successful!",
+          description: isSignup ? "Account created successfully!" : "Login successful!",
         });
         navigate('/portal/parent-dashboard');
       }
@@ -119,15 +137,52 @@ const ParentLogin = () => {
                   />
                 </div>
                 <p className="text-xs text-muted-foreground">
-                  Enter your registered phone number
+                  {isSignup ? 'Enter your phone number to create an account' : 'Enter your registered phone number'}
                 </p>
               </div>
+              
+              {isSignup && (
+                <>
+                  <div className="space-y-2">
+                    <Label htmlFor="fullName">Full Name</Label>
+                    <Input
+                      id="fullName"
+                      type="text"
+                      placeholder="John Doe"
+                      value={fullName}
+                      onChange={(e) => setFullName(e.target.value)}
+                      disabled={loading}
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="email">Email (Optional)</Label>
+                    <Input
+                      id="email"
+                      type="email"
+                      placeholder="john@example.com"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      disabled={loading}
+                    />
+                  </div>
+                </>
+              )}
+              
               <Button
                 onClick={sendOTP}
                 className="w-full"
                 disabled={loading}
               >
                 {loading ? 'Sending...' : 'Send Verification Code'}
+              </Button>
+              
+              <Button
+                onClick={() => setIsSignup(!isSignup)}
+                variant="ghost"
+                className="w-full"
+                disabled={loading}
+              >
+                {isSignup ? 'Already have an account? Login' : "Don't have an account? Sign up"}
               </Button>
             </>
           ) : (

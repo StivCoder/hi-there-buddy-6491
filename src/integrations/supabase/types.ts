@@ -450,9 +450,9 @@ export type Database = {
           marks: number
           remarks: string | null
           result_id: string
+          staff_id: string | null
           student_id: string
           subject: string
-          teacher_id: string | null
           term: Database["public"]["Enums"]["term_type"]
           updated_at: string | null
           year: number
@@ -463,9 +463,9 @@ export type Database = {
           marks: number
           remarks?: string | null
           result_id?: string
+          staff_id?: string | null
           student_id: string
           subject: string
-          teacher_id?: string | null
           term: Database["public"]["Enums"]["term_type"]
           updated_at?: string | null
           year: number
@@ -476,9 +476,9 @@ export type Database = {
           marks?: number
           remarks?: string | null
           result_id?: string
+          staff_id?: string | null
           student_id?: string
           subject?: string
-          teacher_id?: string | null
           term?: Database["public"]["Enums"]["term_type"]
           updated_at?: string | null
           year?: number
@@ -519,6 +519,56 @@ export type Database = {
           updated_at?: string
         }
         Relationships: []
+      }
+      staff: {
+        Row: {
+          assigned_class_id: string | null
+          created_at: string
+          display_order: number
+          email: string | null
+          grade: string
+          id: string
+          is_active: boolean
+          name: string
+          subject: string
+          updated_at: string
+          user_id: string | null
+        }
+        Insert: {
+          assigned_class_id?: string | null
+          created_at?: string
+          display_order?: number
+          email?: string | null
+          grade: string
+          id?: string
+          is_active?: boolean
+          name: string
+          subject: string
+          updated_at?: string
+          user_id?: string | null
+        }
+        Update: {
+          assigned_class_id?: string | null
+          created_at?: string
+          display_order?: number
+          email?: string | null
+          grade?: string
+          id?: string
+          is_active?: boolean
+          name?: string
+          subject?: string
+          updated_at?: string
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "teachers_assigned_class_id_fkey"
+            columns: ["assigned_class_id"]
+            isOneToOne: false
+            referencedRelation: "classes"
+            referencedColumns: ["class_id"]
+          },
+        ]
       }
       student_council: {
         Row: {
@@ -601,56 +651,6 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "parents"
             referencedColumns: ["parent_id"]
-          },
-        ]
-      }
-      teachers: {
-        Row: {
-          assigned_class_id: string | null
-          created_at: string
-          display_order: number
-          email: string | null
-          grade: string
-          id: string
-          is_active: boolean
-          name: string
-          subject: string
-          updated_at: string
-          user_id: string | null
-        }
-        Insert: {
-          assigned_class_id?: string | null
-          created_at?: string
-          display_order?: number
-          email?: string | null
-          grade: string
-          id?: string
-          is_active?: boolean
-          name: string
-          subject: string
-          updated_at?: string
-          user_id?: string | null
-        }
-        Update: {
-          assigned_class_id?: string | null
-          created_at?: string
-          display_order?: number
-          email?: string | null
-          grade?: string
-          id?: string
-          is_active?: boolean
-          name?: string
-          subject?: string
-          updated_at?: string
-          user_id?: string | null
-        }
-        Relationships: [
-          {
-            foreignKeyName: "teachers_assigned_class_id_fkey"
-            columns: ["assigned_class_id"]
-            isOneToOne: false
-            referencedRelation: "classes"
-            referencedColumns: ["class_id"]
           },
         ]
       }

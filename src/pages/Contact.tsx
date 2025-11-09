@@ -18,11 +18,35 @@ const Contact = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    // Basic validation
+    if (!name.trim() || !email.trim() || !message.trim()) {
+      toast({
+        title: "Validation Error",
+        description: "Please fill in all fields",
+        variant: "destructive",
+      });
+      return;
+    }
+    
+    if (name.length > 100 || email.length > 255 || message.length > 1000) {
+      toast({
+        title: "Validation Error",
+        description: "Please check your input lengths",
+        variant: "destructive",
+      });
+      return;
+    }
+    
     setIsSubmitting(true);
     
     try {
       const { error } = await supabase.functions.invoke('send-contact-email', {
-        body: { name, email, message }
+        body: { 
+          name: name.trim(), 
+          email: email.trim(), 
+          message: message.trim() 
+        }
       });
 
       if (error) throw error;
@@ -37,10 +61,9 @@ const Contact = () => {
       setEmail('');
       setMessage('');
     } catch (error: any) {
-      console.error('Error sending message:', error);
       toast({
         title: "Error",
-        description: "Failed to send message. Please try again or contact us directly.",
+        description: error.message || "Failed to send message. Please try again or contact us directly.",
         variant: "destructive",
       });
     } finally {

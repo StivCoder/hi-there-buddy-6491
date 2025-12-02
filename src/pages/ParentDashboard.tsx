@@ -4,7 +4,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
-import { LogOut, User, GraduationCap, BookOpen, Download } from 'lucide-react';
+import { LogOut, GraduationCap, BookOpen, Download, FileText, Calendar } from 'lucide-react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
 interface Student {
@@ -27,11 +27,23 @@ interface Result {
   created_at: string;
 }
 
+interface Assignment {
+  id: string;
+  title: string;
+  description: string | null;
+  subject: string;
+  type: string;
+  file_url: string | null;
+  due_date: string | null;
+  created_at: string;
+}
+
 const ParentDashboard = () => {
   const [parent, setParent] = useState<any>(null);
   const [students, setStudents] = useState<Student[]>([]);
   const [selectedStudent, setSelectedStudent] = useState<string | null>(null);
   const [results, setResults] = useState<Result[]>([]);
+  const [assignments, setAssignments] = useState<Assignment[]>([]);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
   const { toast } = useToast();
@@ -50,6 +62,7 @@ const ParentDashboard = () => {
       setSelectedStudent(parsedParent.students[0].student_id);
     }
     setLoading(false);
+    fetchAssignments();
   }, [navigate]);
 
   useEffect(() => {
@@ -75,6 +88,20 @@ const ParentDashboard = () => {
         description: "Failed to load results",
         variant: "destructive",
       });
+    }
+  };
+
+  const fetchAssignments = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('assignments')
+        .select('*')
+        .order('created_at', { ascending: false });
+
+      if (error) throw error;
+      setAssignments(data || []);
+    } catch (error: any) {
+      console.error('Error fetching assignments:', error);
     }
   };
 
@@ -167,71 +194,183 @@ const ParentDashboard = () => {
           </Card>
         )}
 
-        {/* Results */}
-        <Card>
-          <CardHeader>
-            <div className="flex justify-between items-center">
-              <div>
-                <CardTitle>Academic Results</CardTitle>
-                <CardDescription>View your child's performance</CardDescription>
-              </div>
-              <Button onClick={downloadReport} variant="outline">
-                <Download className="mr-2 h-4 w-4" />
-                Download Report
-              </Button>
-            </div>
-          </CardHeader>
-          <CardContent>
-            {results.length === 0 ? (
-              <div className="text-center py-12 text-muted-foreground">
-                <BookOpen className="mx-auto h-12 w-12 mb-4 opacity-50" />
-                <p>No results available yet</p>
-              </div>
-            ) : (
-              <Tabs defaultValue={`${results[0].year}-${results[0].term}`}>
-                <TabsList>
-                  {Array.from(new Set(results.map(r => `${r.year}-${r.term}`))).map((period) => (
-                    <TabsTrigger key={period} value={period}>
-                      {period.replace('-', ' ')}
-                    </TabsTrigger>
-                  ))}
-                </TabsList>
-                {Array.from(new Set(results.map(r => `${r.year}-${r.term}`))).map((period) => (
-                  <TabsContent key={period} value={period} className="mt-4">
-                    <div className="overflow-x-auto">
-                      <table className="w-full">
-                        <thead>
-                          <tr className="border-b">
-                            <th className="text-left p-2">Subject</th>
-                            <th className="text-center p-2">Marks</th>
-                            <th className="text-center p-2">Grade</th>
-                            <th className="text-left p-2">Remarks</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {results
-                            .filter(r => `${r.year}-${r.term}` === period)
-                            .map((result) => (
-                              <tr key={result.result_id} className="border-b">
-                                <td className="p-2">{result.subject}</td>
-                                <td className="text-center p-2">{result.marks}</td>
-                                <td className="text-center p-2">
-                                  <span className="px-2 py-1 rounded-full bg-primary/10 text-primary text-sm">
-                                    {result.grade}
-                                  </span>
-                                </td>
-                                <td className="p-2">{result.remarks || '-'}</td>
+        {/* Main Content Tabs */}
+        <Tabs defaultValue="results" className="space-y-4">
+          <TabsList className="grid w-full grid-cols-3">
+            <TabsTrigger value="results">Results</TabsTrigger>
+            <TabsTrigger value="assignments">Assignments</TabsTrigger>
+            <TabsTrigger value="materials">Notes & Materials</TabsTrigger>
+          </TabsList>
+
+          {/* Results Tab */}
+          <TabsContent value="results">
+            <Card>
+              <CardHeader>
+                <div className="flex justify-between items-center">
+                  <div>
+                    <CardTitle>Academic Results</CardTitle>
+                    <CardDescription>View your child's performance</CardDescription>
+                  </div>
+                  <Button onClick={downloadReport} variant="outline">
+                    <Download className="mr-2 h-4 w-4" />
+                    Download Report
+                  </Button>
+                </div>
+              </CardHeader>
+              <CardContent>
+                {results.length === 0 ? (
+                  <div className="text-center py-12 text-muted-foreground">
+                    <BookOpen className="mx-auto h-12 w-12 mb-4 opacity-50" />
+                    <p>No results available yet</p>
+                  </div>
+                ) : (
+                  <Tabs defaultValue={`${results[0].year}-${results[0].term}`}>
+                    <TabsList>
+                      {Array.from(new Set(results.map(r => `${r.year}-${r.term}`))).map((period) => (
+                        <TabsTrigger key={period} value={period}>
+                          {period.replace('-', ' ')}
+                        </TabsTrigger>
+                      ))}
+                    </TabsList>
+                    {Array.from(new Set(results.map(r => `${r.year}-${r.term}`))).map((period) => (
+                      <TabsContent key={period} value={period} className="mt-4">
+                        <div className="overflow-x-auto">
+                          <table className="w-full">
+                            <thead>
+                              <tr className="border-b">
+                                <th className="text-left p-2">Subject</th>
+                                <th className="text-center p-2">Marks</th>
+                                <th className="text-center p-2">Grade</th>
+                                <th className="text-left p-2">Remarks</th>
                               </tr>
-                            ))}
-                        </tbody>
-                      </table>
-                    </div>
-                  </TabsContent>
-                ))}
-              </Tabs>
-            )}
-          </CardContent>
-        </Card>
+                            </thead>
+                            <tbody>
+                              {results
+                                .filter(r => `${r.year}-${r.term}` === period)
+                                .map((result) => (
+                                  <tr key={result.result_id} className="border-b">
+                                    <td className="p-2">{result.subject}</td>
+                                    <td className="text-center p-2">{result.marks}</td>
+                                    <td className="text-center p-2">
+                                      <span className="px-2 py-1 rounded-full bg-primary/10 text-primary text-sm">
+                                        {result.grade}
+                                      </span>
+                                    </td>
+                                    <td className="p-2">{result.remarks || '-'}</td>
+                                  </tr>
+                                ))}
+                            </tbody>
+                          </table>
+                        </div>
+                      </TabsContent>
+                    ))}
+                  </Tabs>
+                )}
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          {/* Assignments Tab */}
+          <TabsContent value="assignments">
+            <Card>
+              <CardHeader>
+                <CardTitle>Assignments</CardTitle>
+                <CardDescription>View and download homework assignments</CardDescription>
+              </CardHeader>
+              <CardContent>
+                {assignments.filter(a => a.type === 'assignment').length === 0 ? (
+                  <div className="text-center py-12 text-muted-foreground">
+                    <FileText className="mx-auto h-12 w-12 mb-4 opacity-50" />
+                    <p>No assignments available</p>
+                  </div>
+                ) : (
+                  <div className="space-y-4">
+                    {assignments.filter(a => a.type === 'assignment').map((assignment) => (
+                      <Card key={assignment.id} className="bg-muted/30">
+                        <CardContent className="p-4">
+                          <div className="flex justify-between items-start">
+                            <div className="space-y-1">
+                              <h3 className="font-semibold">{assignment.title}</h3>
+                              <p className="text-sm text-muted-foreground">{assignment.subject}</p>
+                              {assignment.description && (
+                                <p className="text-sm">{assignment.description}</p>
+                              )}
+                              {assignment.due_date && (
+                                <div className="flex items-center gap-1 text-sm text-orange-600">
+                                  <Calendar className="h-4 w-4" />
+                                  Due: {new Date(assignment.due_date).toLocaleDateString()}
+                                </div>
+                              )}
+                            </div>
+                            {assignment.file_url && (
+                              <Button variant="outline" size="sm" asChild>
+                                <a href={assignment.file_url} target="_blank" rel="noopener noreferrer">
+                                  <Download className="mr-2 h-4 w-4" />
+                                  Download
+                                </a>
+                              </Button>
+                            )}
+                          </div>
+                        </CardContent>
+                      </Card>
+                    ))}
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          {/* Notes & Materials Tab */}
+          <TabsContent value="materials">
+            <Card>
+              <CardHeader>
+                <CardTitle>Notes & Revision Materials</CardTitle>
+                <CardDescription>Access class notes and study materials</CardDescription>
+              </CardHeader>
+              <CardContent>
+                {assignments.filter(a => a.type === 'notes' || a.type === 'revision').length === 0 ? (
+                  <div className="text-center py-12 text-muted-foreground">
+                    <BookOpen className="mx-auto h-12 w-12 mb-4 opacity-50" />
+                    <p>No materials available</p>
+                  </div>
+                ) : (
+                  <div className="grid md:grid-cols-2 gap-4">
+                    {assignments.filter(a => a.type === 'notes' || a.type === 'revision').map((material) => (
+                      <Card key={material.id} className="bg-muted/30">
+                        <CardContent className="p-4">
+                          <div className="space-y-2">
+                            <div className="flex justify-between items-start">
+                              <div>
+                                <span className={`text-xs px-2 py-1 rounded-full ${
+                                  material.type === 'notes' ? 'bg-blue-100 text-blue-700' : 'bg-green-100 text-green-700'
+                                }`}>
+                                  {material.type === 'notes' ? 'Class Notes' : 'Revision'}
+                                </span>
+                              </div>
+                            </div>
+                            <h3 className="font-semibold">{material.title}</h3>
+                            <p className="text-sm text-muted-foreground">{material.subject}</p>
+                            {material.description && (
+                              <p className="text-sm text-muted-foreground">{material.description}</p>
+                            )}
+                            {material.file_url && (
+                              <Button variant="outline" size="sm" className="w-full mt-2" asChild>
+                                <a href={material.file_url} target="_blank" rel="noopener noreferrer">
+                                  <Download className="mr-2 h-4 w-4" />
+                                  Download
+                                </a>
+                              </Button>
+                            )}
+                          </div>
+                        </CardContent>
+                      </Card>
+                    ))}
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+          </TabsContent>
+        </Tabs>
       </div>
     </div>
   );

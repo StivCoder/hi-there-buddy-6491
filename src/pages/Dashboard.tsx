@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -14,17 +14,44 @@ import {
   Activity
 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
+import { supabase } from '@/integrations/supabase/client';
 
 const Dashboard = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
   const { toast } = useToast();
+  const [isAdmin, setIsAdmin] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (user?.role !== 'admin') {
-      navigate('/');
+    checkAccess();
+  }, [user]);
+
+  const checkAccess = async () => {
+    if (!user) {
+      navigate('/auth');
+      return;
     }
-  }, [user, navigate]);
+
+    const { data: roles } = await supabase
+      .from('user_roles')
+      .select('role')
+      .eq('user_id', user.id)
+      .eq('role', 'admin');
+
+    if (!roles || roles.length === 0) {
+      toast({
+        title: 'Access Denied',
+        description: 'You need admin access to view this page',
+        variant: 'destructive',
+      });
+      navigate('/');
+      return;
+    }
+
+    setIsAdmin(true);
+    setLoading(false);
+  };
 
   const stats = [
     { title: 'Total Students', value: '248', icon: Users, color: 'text-blue-500' },
@@ -79,7 +106,7 @@ const Dashboard = () => {
     { action: 'User created', detail: 'New parent account', time: '2 days ago' },
   ];
 
-  if (user?.role !== 'admin') {
+  if (loading || !isAdmin) {
     return null;
   }
 
@@ -171,7 +198,7 @@ const Dashboard = () => {
               <CardContent className="space-y-2 text-sm">
                 <div className="flex justify-between">
                   <span className="text-muted-foreground">Role:</span>
-                  <span className="font-medium capitalize">{user?.role}</span>
+                  <span className="font-medium capitalize">Admin</span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-muted-foreground">Email:</span>

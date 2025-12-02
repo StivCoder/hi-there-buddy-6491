@@ -22,6 +22,7 @@ import ContentManager from "./pages/ContentManager";
 import ParentLogin from "./pages/ParentLogin";
 import ParentDashboard from "./pages/ParentDashboard";
 import AdmissionForm from "./pages/AdmissionForm";
+import StaffLogin from "./pages/StaffLogin";
 
 const queryClient = new QueryClient();
 
@@ -40,12 +41,13 @@ const App = () => (
               <Route path="/contact" element={<Contact />} />
               <Route path="/gallery" element={<Gallery />} />
               <Route path="/calendar" element={<CalendarNew />} />
-          <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/teacher-dashboard" element={<TeacherDashboard />} />
+              <Route path="/dashboard" element={<Dashboard />} />
+              <Route path="/teacher-dashboard" element={<TeacherDashboard />} />
               <Route path="/content-manager" element={<ContentManager />} />
               <Route path="/login" element={<Login />} />
               <Route path="/auth" element={<Auth />} />
               <Route path="/portal/login" element={<ParentLogin />} />
+              <Route path="/portal/staff-login" element={<StaffLogin />} />
               <Route path="/portal/parent-dashboard" element={<ParentDashboard />} />
               <Route path="/admission" element={<AdmissionForm />} />
               <Route path="*" element={<NotFound />} />

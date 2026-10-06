@@ -85,7 +85,7 @@ const AdmissionForm = () => {
 
   if (submitted) {
     return (
-      <div className="min-h-screen bg-muted flex items-center justify-center p-4">
+      <div className="min-h-screen bg-background flex items-center justify-center p-4">
         <Card className="w-full max-w-md text-center">
           <CardHeader>
             <div className="mx-auto w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mb-4">
@@ -115,7 +115,7 @@ const AdmissionForm = () => {
   }
 
   return (
-    <div className="min-h-screen bg-muted p-4 py-12">
+    <div className="min-h-screen bg-background p-4 py-12">
       <Card className="max-w-3xl mx-auto">
         <CardHeader>
           <div className="flex items-center gap-3">

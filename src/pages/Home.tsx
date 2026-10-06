@@ -250,7 +250,7 @@ const Home = () => {
       </section>
 
       {/* Mission & Vision */}
-      <section className="py-20 bg-muted relative overflow-hidden">
+      <section className="py-20 bg-background relative overflow-hidden">
         <div className="absolute inset-0 opacity-5 bg-[radial-gradient(circle_at_50%_50%,_hsl(var(--primary))_1px,_transparent_1px)] bg-[size:24px_24px]"></div>
         <div className="container mx-auto px-4 relative z-10">
           <div className="grid md:grid-cols-2 gap-8 max-w-6xl mx-auto">

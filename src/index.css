@@ -129,7 +129,7 @@ All colors MUST be HSL.
     --shadow-lg: 0 12px 32px hsl(0 0% 0% / 0.38), 0 4px 16px hsl(0 0% 0% / 0.28);
     --shadow-xl: 0 20px 48px hsl(0 0% 0% / 0.48), 0 8px 24px hsl(0 0% 0% / 0.38);
     --shadow-glow: 0 0 48px hsl(217 91% 78% / 0.5), 0 0 24px hsl(217 91% 78% / 0.3);
-    --shadow-glow-secondary: 0 0 48px hsl(142 76% 65% / 0.5), 0 0 24px hsl(142 76% 65% / 0.3);
+    --shadow-glow-secondary: 0 0 48px hsl(0 0% 0% / 0.5), 0 0 24px hsl(0 0% 0% / 0.3);
     --shadow-inner: inset 0 2px 4px hsl(0 0% 0% / 0.15);
   }
   

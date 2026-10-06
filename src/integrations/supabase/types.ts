@@ -737,6 +737,24 @@ export type Database = {
         }
         Returns: boolean
       }
+      link_parent_account: {
+        Args: never
+        Returns: {
+          created_at: string | null
+          email: string | null
+          full_name: string
+          parent_id: string
+          phone_number: string
+          updated_at: string | null
+          user_id: string | null
+        }[]
+        SetofOptions: {
+          from: "*"
+          to: "parents"
+          isOneToOne: false
+          isSetofReturn: true
+        }
+      }
     }
     Enums: {
       admission_status: "pending" | "approved" | "rejected"

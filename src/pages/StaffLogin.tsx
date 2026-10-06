@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -7,6 +7,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useToast } from '@/hooks/use-toast';
 import { GraduationCap, Mail, Lock } from 'lucide-react';
+import GoogleSignInButton from '@/components/GoogleSignInButton';
 
 const StaffLogin = () => {
   const [email, setEmail] = useState('');
@@ -15,68 +16,53 @@ const StaffLogin = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
 
-  const handleLogin = async (e: React.FormEvent) => {
-    e.preventDefault();
-    
-    if (!email || !password) {
+  const routeByRole = async (userId: string) => {
+    const { data: roles } = await supabase
+      .from('user_roles')
+      .select('role')
+      .eq('user_id', userId)
+      .in('role', ['teacher', 'admin']);
+
+    if (!roles || roles.length === 0) {
+      await supabase.auth.signOut();
       toast({
-        title: "Error",
-        description: "Please enter your email and password",
+        title: "No staff account found",
+        description: "You need to be registered as staff first. Contact the admin to create your account.",
         variant: "destructive",
       });
       return;
     }
+    toast({ title: "Welcome!", description: "Login successful" });
+    navigate(roles.some(r => r.role === 'admin') ? '/dashboard' : '/teacher-dashboard');
+  };
 
+  // Handle return from Google sign-in
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data }) => {
+      const u = data.session?.user;
+      if (u && u.app_metadata?.provider === 'google') routeByRole(u.id);
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const handleLogin = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!email || !password) {
+      toast({ title: "Error", description: "Please enter your email and password", variant: "destructive" });
+      return;
+    }
     setLoading(true);
     try {
-      const { data, error } = await supabase.auth.signInWithPassword({
-        email,
-        password,
-      });
-
+      const { data, error } = await supabase.auth.signInWithPassword({ email, password });
       if (error) throw error;
-
-      // Check if user has teacher or admin role
-      const { data: roles } = await supabase
-        .from('user_roles')
-        .select('role')
-        .eq('user_id', data.user.id)
-        .in('role', ['teacher', 'admin']);
-
-      if (!roles || roles.length === 0) {
-        await supabase.auth.signOut();
-        toast({
-          title: "Access Denied",
-          description: "This account does not have staff access",
-          variant: "destructive",
-        });
-        return;
-      }
-
-      const hasAdmin = roles.some(r => r.role === 'admin');
-      const hasTeacher = roles.some(r => r.role === 'teacher');
-
-      toast({
-        title: "Welcome!",
-        description: "Login successful",
-      });
-
-      // Redirect based on role
-      if (hasAdmin) {
-        navigate('/dashboard');
-      } else if (hasTeacher) {
-        navigate('/teacher-dashboard');
-      }
+      await routeByRole(data.user.id);
     } catch (error: any) {
-      toast({
-        title: "Login Failed",
-        description: error.message || "Invalid email or password",
-        variant: "destructive",
-      });
+      toast({ title: "Login Failed", description: error.message || "Invalid email or password", variant: "destructive" });
     } finally {
       setLoading(false);
     }
   };
+
 
   return (
     <div className="min-h-screen bg-background flex items-center justify-center p-4">

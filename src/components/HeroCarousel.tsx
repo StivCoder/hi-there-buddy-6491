@@ -80,8 +80,8 @@ export const HeroCarousel = ({ children }: { children: React.ReactNode }) => {
                       className="w-full h-full object-cover scale-110 animate-[zoom_20s_ease-in-out_infinite]"
                     />
                   </div>
-                  <div className="absolute inset-0 bg-gradient-to-br from-primary/90 via-accent/80 to-primary/95"></div>
-                  <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_50%,_hsl(var(--secondary))_0%,_transparent_50%)] opacity-20"></div>
+                  <div className="absolute inset-0 bg-secondary/75"></div>
+                  
                 </div>
 
                 {/* Animated Decorative Elements */}

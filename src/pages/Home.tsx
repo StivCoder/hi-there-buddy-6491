@@ -133,7 +133,7 @@ const Home = () => {
       </HeroCarousel>
 
       {/* Statistics Banner */}
-      <section className="bg-gradient-to-r from-primary/10 via-secondary/10 to-primary/10 py-12">
+      <section className="bg-primary/10 py-12">
         <div className="container mx-auto px-4">
           <StaggerContainer className="grid md:grid-cols-3 gap-8 max-w-4xl mx-auto">
             <StaggerItem>
@@ -183,7 +183,7 @@ const Home = () => {
       </section>
 
       {/* SEO Introduction */}
-      <section className="py-16 bg-gradient-to-b from-secondary/10 to-background">
+      <section className="py-16 bg-background">
         <div className="container mx-auto px-4">
           <AnimatedSection delay={0.2} className="max-w-4xl mx-auto text-center">
             <h2 className="text-3xl md:text-4xl font-display font-bold mb-6 text-gradient">
@@ -250,7 +250,7 @@ const Home = () => {
       </section>
 
       {/* Mission & Vision */}
-      <section className="py-20 bg-gradient-to-br from-muted/50 to-muted/20 relative overflow-hidden">
+      <section className="py-20 bg-muted relative overflow-hidden">
         <div className="absolute inset-0 opacity-5 bg-[radial-gradient(circle_at_50%_50%,_hsl(var(--primary))_1px,_transparent_1px)] bg-[size:24px_24px]"></div>
         <div className="container mx-auto px-4 relative z-10">
           <div className="grid md:grid-cols-2 gap-8 max-w-6xl mx-auto">
@@ -325,7 +325,7 @@ const Home = () => {
       </section>
 
       {/* CTA Section */}
-      <section className="py-16 bg-gradient-to-br from-secondary to-secondary/80 text-secondary-foreground relative overflow-hidden">
+      <section className="py-16 bg-secondary text-secondary-foreground relative overflow-hidden">
         <motion.div 
           className="absolute inset-0 opacity-10"
           animate={{ 

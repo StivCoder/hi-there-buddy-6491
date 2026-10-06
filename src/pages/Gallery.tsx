@@ -181,7 +181,7 @@ const Gallery = () => {
                       ) : (
                         <ImageIcon className="w-16 h-16 text-muted-foreground group-hover:scale-110 transition-transform" />
                       )}
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+                      <div className="absolute inset-0 bg-secondary/60 opacity-0 group-hover:opacity-100 transition-opacity" />
                     </div>
                     <div className="p-4">
                       <h3 className="font-semibold text-lg mb-1">{event.title}</h3>

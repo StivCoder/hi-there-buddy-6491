@@ -132,7 +132,7 @@ const ParentDashboard = () => {
   const currentStudent = students.find(s => s.student_id === selectedStudent);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-primary/5 to-secondary/5 p-4">
+    <div className="min-h-screen bg-muted p-4">
       <div className="max-w-7xl mx-auto space-y-6">
         {/* Header */}
         <div className="flex justify-between items-center">
